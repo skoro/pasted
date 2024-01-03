@@ -28,4 +28,10 @@
 
 import './index.css';
 
+import { createApp } from 'vue';
+import App from './components/App.vue';
+
+createApp(App).mount('#app');
+
+
 console.log('👋 This message is being logged by "renderer.js", included via Vite');
