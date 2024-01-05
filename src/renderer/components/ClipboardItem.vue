@@ -3,8 +3,9 @@ import IconTrash from './icons/IconTrash.vue';
 import IconFavoriteSolid from './icons/IconFavoriteSolid.vue';
 import IconFavoriteOutline from './icons/IconFavoriteOutline.vue';
 import ToolButton from './ToolButton.vue';
-import Clip from '@/stores/Clip';
-import { useClipboardStore } from '@/stores/useClipboardStore';
+import Clip from '../stores/clip-entity';
+import { useClipboardStore } from '../stores/useClipboardStore';
+import { toRaw } from 'vue';
 
 const props = defineProps({
     clip: {
@@ -24,7 +25,13 @@ function trash() {
         || (props.clip.favorite && confirm('Are you sure you want to remove ?')))
     {
         clipboardStore.remove(props.clip.id)
+        // FIXME: there should be original object, vue proxied object cannot be cloned by ipc
+        window.electronAPI.removeClipEntity(toRaw(props.clip))
     }
+}
+
+function select() {
+    window.electronAPI.selectClipEntity(toRaw(props.clip))
 }
 
 </script>
@@ -32,7 +39,7 @@ function trash() {
 <template>
     <div class="flex p-2 space-x-2 hover:bg-slate-50 items-center max-h-20"
         :class="{ 'bg-slate-200': clip.favorite, 'bg-slate-100': !clip.favorite }">
-        <a class="flex-grow text-xs text-left text-slate-500 truncate" href="#">
+        <a class="flex-grow text-xs text-left text-slate-500 truncate" href="#" @click="select">
             {{ clip.data }}
         </a>
 
@@ -46,3 +53,4 @@ function trash() {
         </ToolButton>
     </div>
 </template>
+../stores/clip-model

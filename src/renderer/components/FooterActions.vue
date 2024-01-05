@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import ToolButton from './ToolButton.vue';
 import IconTrash from './icons/IconTrash.vue';
-import { useClipboardStore } from '@/stores/useClipboardStore';
+import { useClipboardStore } from '../stores/useClipboardStore';
 
 const clipboardStore = useClipboardStore()
 
@@ -11,6 +11,7 @@ const hasClips = computed(() => clipboardStore.clips.length > 0)
 function clear() {
     if (hasClips.value && confirm('Are you sure you want to clear ?')) {
         clipboardStore.clear()
+        window.electronAPI.clearList()
     }
 }
 </script>

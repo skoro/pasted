@@ -1,5 +1,5 @@
 <script setup>
-import { useClipboardStore } from '@/stores/useClipboardStore';
+import { useClipboardStore } from '../stores/useClipboardStore';
 
 const clipboardStore = useClipboardStore()
 </script>

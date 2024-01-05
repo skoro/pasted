@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+import { app, BrowserWindow, ipcMain } from 'electron';
+import path from 'node:path';
+import { clipboardEventEmitter } from './clipboard';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -25,6 +26,20 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  // Start clipboard watcher and send new clips to renderer process.
+  clipboardEventEmitter
+    .start()
+    .on('clipboard:new', (clipEntity) => mainWindow.webContents.send('clipboard:new', clipEntity));
+
+  // Handlers from renderer.
+  ipcMain.on('clip:remove', (event, data) => {
+    if (clipboardEventEmitter.isLastCopied(data.id)) {
+      clipboardEventEmitter.reset()
+    }
+  });
+
+  ipcMain.on('clip:select', (event, data) => clipboardEventEmitter.copy(data));
 };
 
 // This method will be called when Electron has finished
