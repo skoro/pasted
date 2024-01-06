@@ -42,6 +42,7 @@ class ClipboardEventEmitter extends EventEmitter {
   }
 
   copy(data) {
+    this._recent = new ClipEntity(data.data);
     clipboard.writeText(data.data);
   }
 }
