@@ -18,7 +18,7 @@
     </div>
 
     <div class="divide-y-2 divide-dotted divide-slate-200 mb-10">
-      <ClipboardItem v-for="clip in clipboard.clips" :key="clip.id" :clip="clip">
+      <ClipboardItem v-for="(clip, index) in clipboard.clips" :key="clip.id" :clip="clip" :first="index==0">
       </ClipboardItem>
     </div>
 

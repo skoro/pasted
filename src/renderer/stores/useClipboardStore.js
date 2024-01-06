@@ -32,7 +32,9 @@ export const useClipboardStore = defineStore("clips", () => {
   function remove(clipId) {
     for (var i = 0; i < clipEntities.value.length; i++) {
       if (clipEntities.value[i].id === clipId) {
+        const clipEntity = clipEntities.value[i];
         clipEntities.value.splice(i, 1);
+        return clipEntity;
       }
     }
   }
@@ -49,5 +51,12 @@ export const useClipboardStore = defineStore("clips", () => {
     }
   }
 
-  return { clips, favorites, filter, append, remove, clear, toggleFavorite };
+  function moveOnTop(clipId) {
+    const clipEntity = remove(clipId);
+    if (clipEntity) {
+      clipEntities.value.unshift(clipEntity);
+    }
+  }
+
+  return { clips, favorites, filter, append, remove, clear, toggleFavorite, moveOnTop };
 });

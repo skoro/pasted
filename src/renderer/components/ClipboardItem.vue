@@ -11,7 +11,11 @@ const props = defineProps({
     clip: {
         type: Clip,
         required: true,
-    }
+    },
+    first: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const clipboardStore = useClipboardStore()
@@ -31,6 +35,7 @@ function trash() {
 }
 
 function select() {
+    clipboardStore.moveOnTop(props.clip.id)
     window.electronAPI.selectClipEntity(toRaw(props.clip))
 }
 
@@ -38,7 +43,7 @@ function select() {
 
 <template>
     <div class="flex p-2 space-x-2 hover:bg-slate-50 items-center max-h-20"
-        :class="{ 'bg-slate-200': clip.favorite, 'bg-slate-100': !clip.favorite }">
+        :class="{ 'bg-slate-200': clip.favorite, 'bg-slate-100': !clip.favorite && !first, 'bg-sky-200': first }">
         <a class="flex-grow text-xs text-left text-slate-500 truncate" href="#" @click="select">
             {{ clip.data }}
         </a>
