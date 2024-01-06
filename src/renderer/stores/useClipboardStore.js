@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import ClipEntity from "./clip-entity";
 
 export const useClipboardStore = defineStore("clips", () => {
+  const MAX_BUFFER = 100;
   const clipEntities = ref([]);
   const filter = ref("");
 
@@ -22,6 +23,9 @@ export const useClipboardStore = defineStore("clips", () => {
   // actions
 
   function append(data) {
+    if (clipEntities.value.length >= MAX_BUFFER) {
+      clipEntities.value.pop();
+    }
     clipEntities.value.unshift(new ClipEntity(data.data));
   }
 
