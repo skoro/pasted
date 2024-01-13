@@ -1,5 +1,5 @@
 <template>
-    <a class="hover:bg-gray-200 rounded-md" href="#">
+    <button class="hover:text-black">
         <slot></slot>
-    </a>
+    </button>
 </template>

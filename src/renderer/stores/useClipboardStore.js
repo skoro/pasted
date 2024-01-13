@@ -9,14 +9,11 @@ export const useClipboardStore = defineStore("clips", () => {
 
   // state
 
-  const favorites = computed(() =>
-    clipEntities.value
-      .filter((i) => i.favorite)
-      .filter((i) => i.hasMatch(filter.value))
-  );
+  const favorites = ref(false)
+  
   const clips = computed(() =>
     clipEntities.value
-      .filter((i) => !i.favorite)
+      .filter((i) => favorites.value ? i.favorite : true)
       .filter((i) => i.hasMatch(filter.value))
   );
 

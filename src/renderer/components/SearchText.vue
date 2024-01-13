@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Mousetrap from 'mousetrap';
 import { useClipboardStore } from '../stores/useClipboardStore';
 import keyboard from '../keyshortcuts';
@@ -13,14 +13,16 @@ const focus = () => {
     }
 }
 
-Mousetrap.bind(keyboard.search, focus);
+onMounted(() => {
+    Mousetrap.bind(keyboard.search, focus);
+})
 </script>
 
 <template>
     <input type="text"
-        class="w-full rounded-lg  bg-slate-100 focus:bg-slate-50 p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-300"
+        class="w-5/6 sm:w-1/2 focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none text-sm text-slate-900 placeholder-slate-400 rounded-md py-1 px-2 ring-1 ring-slate-200 shadow-sm"
         v-model="clipboardStore.filter"
         ref="searchInput"
-        placeholder="Type here to search..."
+        placeholder="Press Ctrl-/ to search..."
     />
 </template>
