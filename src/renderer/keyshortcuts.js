@@ -1,3 +1,4 @@
 export default {
-    "search": "ctrl+k"
+    "search": "ctrl+k",
+    "toggleFavorites": "ctrl+/",
 };

@@ -1,16 +1,20 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import Mousetrap from 'mousetrap';
 import ToolButton from './ToolButton.vue';
 import IconTrash from './icons/IconTrash.vue';
 import IconFavoriteOutline from './icons/IconFavoriteOutline.vue';
 import IconFavoriteSolid from './icons/IconFavoriteSolid.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
+import keyboard from '../keyshortcuts';
 
 const clipboardStore = useClipboardStore()
 
 const hasClips = computed(() => clipboardStore.clips.length > 0)
 
 const showFavs = ref(false)
+
+onMounted(() => Mousetrap.bind(keyboard.toggleFavorites, toggleFavorites))
 
 function clear() {
     if (hasClips.value && confirm('Are you sure you want to clear ?')) {
