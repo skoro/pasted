@@ -1,3 +1,3 @@
 export default {
-    "search": "ctrl+/"
+    "search": "ctrl+k"
 };

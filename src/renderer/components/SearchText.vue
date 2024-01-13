@@ -23,6 +23,6 @@ onMounted(() => {
         class="w-5/6 sm:w-1/2 focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none text-sm text-slate-900 placeholder-slate-400 rounded-md py-1 px-2 ring-1 ring-slate-200 shadow-sm"
         v-model="clipboardStore.filter"
         ref="searchInput"
-        placeholder="Press Ctrl-/ to search..."
+        placeholder="Press Ctrl-K to search..."
     />
 </template>
