@@ -9,6 +9,8 @@ defineEmits([
     'switch-view',
     'toggle-favorite',
     'copy-item',
+    // declared but not used, this fixes warning in ClipboardItem component.
+    'remove-item',
 ])
 
 const props = defineProps({
