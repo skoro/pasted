@@ -42,5 +42,6 @@ app.mount('#app');
 
 const clipboardStore = useClipboardStore();
 
+db.open(clipboardStore.getModelsFromDb)
+
 window.electronAPI.onClipboardNew(clipboardStore.put);
-window.db = db

@@ -1,6 +1,7 @@
-import { ref, computed } from "vue";
+import { ref, toRaw, computed } from "vue";
 import { defineStore } from "pinia";
 import Model from "../../models/clip";
+import db from './db'
 
 export const useClipboardStore = defineStore('clips', () => {
   const MAX_BUFFER = 100;
@@ -27,6 +28,7 @@ export const useClipboardStore = defineStore('clips', () => {
       modelCollection.value.pop()
     }
     modelCollection.value.unshift(model)
+    db.add(model)
   }
 
   /**
@@ -36,7 +38,9 @@ export const useClipboardStore = defineStore('clips', () => {
   function remove(clipId) {
     for (var i = 0; i < modelCollection.value.length; i++) {
       if (modelCollection.value[i].id === clipId) {
+        /** @type {import("../../models/clip").Model} */
         const model = modelCollection.value[i];
+        db.remove(model.id)
         modelCollection.value.splice(i, 1);
         return model;
       }
@@ -54,9 +58,15 @@ export const useClipboardStore = defineStore('clips', () => {
     for (const clip of modelCollection.value) {
       if (clip.id === clipId) {
         clip.starred = !clip.starred
+        db.update(toRaw(clip))
       }
     }
   }
 
-  return { clips, onlyStarred, filter, put, remove, clear, toggleStarred }
+  function getModelsFromDb() {
+    clear()
+    db.getAll(put)
+  }
+
+  return { clips, onlyStarred, filter, put, remove, clear, toggleStarred, getModelsFromDb }
 });
