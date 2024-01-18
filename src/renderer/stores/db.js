@@ -58,20 +58,26 @@ function get(clip, onsuccess, onerror) {
     request.onerror = onerror
 }
 
-function getAll(onrecord) {
+function getAll(onrecord, onnomorecord) {
     const objectStore = getClipsObjectStore()
     objectStore.openCursor().onsuccess = (event) => {
         const cursor = event.target.result
         if (cursor) {
-            onrecord(cursor.value)
+            onrecord && onrecord(cursor.value)
             cursor.continue()
+        } else {
+            onnomorecord && onnomorecord()
         }
     }
 }
 
 function update(clip, onsuccess) {
-    const request = getClipsObjectStore().put(clip)
+    const request = getClipsObjectStore('readwrite').put(clip)
     request.onsuccess = onsuccess
 }
 
-export default { open, isOpened, add, get, getAll, update }
+function remove(id) {
+    getClipsObjectStore('readwrite').delete(id)
+}
+
+export default { open, isOpened, add, get, getAll, update, remove }
