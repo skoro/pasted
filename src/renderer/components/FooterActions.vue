@@ -6,7 +6,7 @@ import IconTrash from './icons/IconTrash.vue';
 import IconStarOutline from './icons/IconStarOutline.vue';
 import IconStarSolid from './icons/IconStarSolid.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
-import keyboard from '../keyshortcuts';
+import { keyboard } from '../keyshortcuts';
 
 const clipboardStore = useClipboardStore()
 

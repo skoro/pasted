@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import Mousetrap from 'mousetrap';
 import { useClipboardStore } from '../stores/useClipboardStore';
-import keyboard from '../keyshortcuts';
+import { keyboard } from '../keyshortcuts';
 
 const clipboardStore = useClipboardStore()
 const searchInput = ref(null)
