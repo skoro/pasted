@@ -2,7 +2,7 @@ import hash from 'hash.js'
 import { v4 as uuid } from 'uuid'
 
 /**
- * @typedef {{id: string, data: string, starred: boolean, hash: string}} Model
+ * @typedef {{id: string, data: string, starred: boolean, hash: string, created: number}} Model
  */
 
 /**
@@ -15,7 +15,8 @@ function factory(data, starred = false) {
         data: String(data),
         starred: Boolean(starred),
         id: uuid(),
-        hash: createCheckSum(data)
+        hash: createCheckSum(data),
+        created: Date.now(),
     }
 }
 
