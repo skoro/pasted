@@ -3,8 +3,8 @@ import { ref, computed, onMounted } from 'vue';
 import Mousetrap from 'mousetrap';
 import ToolButton from './ToolButton.vue';
 import IconTrash from './icons/IconTrash.vue';
-import IconFavoriteOutline from './icons/IconFavoriteOutline.vue';
-import IconFavoriteSolid from './icons/IconFavoriteSolid.vue';
+import IconStarOutline from './icons/IconStarOutline.vue';
+import IconStarSolid from './icons/IconStarSolid.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
 import keyboard from '../keyshortcuts';
 
@@ -32,8 +32,8 @@ function toggleStarred() {
 <template>
     <div class="fixed flex flex-row bottom-0 left-0 h-11 w-full bg-gray-200 space-x-4 justify-center items-center text-gray-600">
         <ToolButton class="w-8 h-8" @click="toggleStarred">
-            <IconFavoriteSolid v-if="showStarred" />
-            <IconFavoriteOutline v-else />
+            <IconStarSolid v-if="showStarred" />
+            <IconStarOutline v-else />
         </ToolButton>
         <ToolButton class="w-8 h-8" @click="clear" :disabled="!hasClips">
             <IconTrash />

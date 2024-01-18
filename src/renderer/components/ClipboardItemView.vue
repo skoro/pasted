@@ -1,8 +1,8 @@
 <script setup>
 import ToolButton from './ToolButton.vue'
 import IconDotsHorizontal from './icons/IconDotsHorizontal.vue'
-import IconFavoriteOutline from './icons/IconFavoriteOutline.vue'
-import IconFavoriteSolid from './icons/IconFavoriteSolid.vue'
+import IconStarOutline from './icons/IconStarOutline.vue'
+import IconStarSolid from './icons/IconStarSolid.vue'
 
 defineEmits([
     'switch-view',
@@ -30,8 +30,8 @@ const props = defineProps({
             <IconDotsHorizontal />
         </ToolButton>
         <ToolButton @click="$emit('toggle-starred')">
-            <IconFavoriteSolid v-if="clip.starred" />
-            <IconFavoriteOutline v-else />
+            <IconStarSolid v-if="clip.starred" />
+            <IconStarOutline v-else />
         </ToolButton>
     </div>
 </template>
