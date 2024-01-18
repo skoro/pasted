@@ -32,6 +32,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './components/App.vue';
 import { useClipboardStore } from './stores/useClipboardStore';
+import db from './stores/db'
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -41,4 +42,5 @@ app.mount('#app');
 
 const clipboardStore = useClipboardStore();
 
-window.electronAPI.onClipboardNew(clipboardStore.append);
+window.electronAPI.onClipboardNew(clipboardStore.put);
+window.db = db

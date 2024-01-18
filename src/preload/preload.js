@@ -10,8 +10,8 @@ contextBridge.exposeInMainWorld("versions", {
 });
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  onClipboardNew: (callback) => ipcRenderer.on('clipboard:new', (_event, data) => callback(data)),
-  removeClipEntity: (clipEntity) => ipcRenderer.send('clip:remove', clipEntity),
-  selectClipEntity: (clipEntity) => ipcRenderer.send('clip:select', clipEntity),
+  onClipboardNew: (callback) => ipcRenderer.on('clipboard:new', (_event, clipModel) => callback(clipModel)),
+  removeClipModel: (clipModelId) => ipcRenderer.send('clip:remove', clipModelId),
+  selectClipModel: (clipModel) => ipcRenderer.send('clip:select', clipModel),
   clearList: () => ipcRenderer.send('clear:list'),
 });

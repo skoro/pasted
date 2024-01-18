@@ -1,13 +1,12 @@
 <script setup>
 import ClipboardItemView from './ClipboardItemView.vue';
 import ClipboardItemMenu from './ClipboardItemMenu.vue';
-import Clip from '../stores/clip-entity';
 import { useClipboardStore } from '../stores/useClipboardStore';
 import { shallowRef, toRaw } from 'vue';
 
 const props = defineProps({
     clip: {
-        type: Clip,
+        type: Object,
         required: true,
     }
 })
@@ -34,24 +33,23 @@ function onSwitchContext(view) {
 }
 
 function onCopyItem() {
-    window.electronAPI.selectClipEntity(toRaw(props.clip))
+    window.electronAPI.selectClipModel(toRaw(props.clip))
     setViewContext()
 }
 
-function onToggleFavorite() {
-    clipboardStore.toggleFavorite(props.clip.id)
+function onToggleStarred() {
+    clipboardStore.toggleStarred(props.clip.id)
     setViewContext()
 }
 
 function onRemoveItem() {
-    if (!props.clip.favorite
-        || (props.clip.favorite && confirm('Are you sure you want to remove ?')))
+    if (!props.clip.starred
+        || (props.clip.starred && confirm('Are you sure you want to remove ?')))
     {
         clipboardStore.remove(props.clip.id)
         // FIXME: there should be original object, vue proxied object cannot be cloned by ipc
-        window.electronAPI.removeClipEntity(toRaw(props.clip))
+        window.electronAPI.removeClipModel(props.clip.id)
     }
-    setViewContext()
 }
 </script>
 
@@ -61,7 +59,7 @@ function onRemoveItem() {
             :is="context"
             :clip="clip"
             @switch-view="onSwitchContext"
-            @toggle-favorite="onToggleFavorite"
+            @toggle-starred="onToggleStarred"
             @copy-item="onCopyItem"
             @remove-item="onRemoveItem"
         >

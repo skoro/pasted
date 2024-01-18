@@ -1,9 +1,13 @@
 import { clipboard } from "electron";
 import { EventEmitter } from "node:events";
-import ClipEntity from "../renderer/stores/clip-entity";
+import Clip from '../models/clip'
 
 class ClipboardEventEmitter extends EventEmitter {
+
+  /** @type {boolean} */
   isRunning = false;
+  
+  /** @type {?import("../models/clip").Model} */
   _recent;
 
   start() {
@@ -21,17 +25,22 @@ class ClipboardEventEmitter extends EventEmitter {
     if (!this.isRunning) {
       return;
     }
+    /** @type {string} */
     const text = clipboard.readText();
     if (text.length) {
-      const entity = new ClipEntity(text);
-      if (!this._recent || (this._recent && !this._recent.equals(entity))) {
-        this._recent = entity;
-        this.emit("clipboard:new", entity);
+      const newClip = Clip.factory(text)
+      if (!this._recent || !Clip.equals(this._recent, newClip)) {
+        this._recent = newClip;
+        this.emit("clipboard:new", newClip);
       }
     }
     setTimeout(this._loop.bind(this), 800);
   }
 
+  /**
+   * @param {string} id 
+   * @returns {boolean}
+   */
   isLastCopied(id) {
     return this._recent?.id === id;
   }
@@ -41,9 +50,12 @@ class ClipboardEventEmitter extends EventEmitter {
     clipboard.clear();
   }
 
-  copy(data) {
-    this._recent = new ClipEntity(data.data);
-    clipboard.writeText(data.data);
+  /**
+   * @param {import("../models/clip").Model} clip
+   */
+  copy(clip) {
+    this._recent = clip
+    clipboard.writeText(clip.data)
   }
 }
 

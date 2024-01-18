@@ -1,37 +1,44 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import ClipEntity from "./clip-entity";
+import Model from "../../models/clip";
 
-export const useClipboardStore = defineStore("clips", () => {
+export const useClipboardStore = defineStore('clips', () => {
   const MAX_BUFFER = 100;
-  const clipEntities = ref([]);
-  const filter = ref("");
+  const modelCollection = ref([]);
 
   // state
 
-  const favorites = ref(false)
+  const filter = ref('');
+  const onlyStarred = ref(false)
   
   const clips = computed(() =>
-    clipEntities.value
-      .filter((i) => favorites.value ? i.favorite : true)
-      .filter((i) => i.hasMatch(filter.value))
-  );
+    modelCollection.value
+      .filter((i) => onlyStarred.value ? i.starred : true)
+      .filter((i) => filter.value ? Model.contains(i, filter.value) : true)
+  )
 
   // actions
 
-  function append(data) {
-    if (clipEntities.value.length >= MAX_BUFFER) {
-      clipEntities.value.pop();
+  /**
+   * @param {import("../../models/clip").Model} model
+   */
+  function put(model) {
+    if (modelCollection.value.length >= MAX_BUFFER) {
+      modelCollection.value.pop()
     }
-    clipEntities.value.unshift(new ClipEntity(data.data));
+    modelCollection.value.unshift(model)
   }
 
+  /**
+   * @param {string} clipId
+   * @returns {import("../../models/clip").Model}
+   */
   function remove(clipId) {
-    for (var i = 0; i < clipEntities.value.length; i++) {
-      if (clipEntities.value[i].id === clipId) {
-        const clipEntity = clipEntities.value[i];
-        clipEntities.value.splice(i, 1);
-        return clipEntity;
+    for (var i = 0; i < modelCollection.value.length; i++) {
+      if (modelCollection.value[i].id === clipId) {
+        const model = modelCollection.value[i];
+        modelCollection.value.splice(i, 1);
+        return model;
       }
     }
   }
@@ -40,20 +47,16 @@ export const useClipboardStore = defineStore("clips", () => {
     clips.value.forEach((i) => remove(i.id));
   }
 
-  function toggleFavorite(clipId) {
-    for (const clip of clipEntities.value) {
+  /**
+   * @param {string} clipId
+   */
+  function toggleStarred(clipId) {
+    for (const clip of modelCollection.value) {
       if (clip.id === clipId) {
-        clip.favorite = !clip.favorite;
+        clip.starred = !clip.starred
       }
     }
   }
 
-  function moveOnTop(clipId) {
-    const clipEntity = remove(clipId);
-    if (clipEntity) {
-      clipEntities.value.unshift(clipEntity);
-    }
-  }
-
-  return { clips, favorites, filter, append, remove, clear, toggleFavorite, moveOnTop };
+  return { clips, onlyStarred, filter, put, remove, clear, toggleStarred }
 });

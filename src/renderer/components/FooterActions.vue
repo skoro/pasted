@@ -12,9 +12,9 @@ const clipboardStore = useClipboardStore()
 
 const hasClips = computed(() => clipboardStore.clips.length > 0)
 
-const showFavs = ref(false)
+const showStarred = ref(false)
 
-onMounted(() => Mousetrap.bind(keyboard.toggleFavorites, toggleFavorites))
+onMounted(() => Mousetrap.bind(keyboard.toggleFavorites, toggleStarred))
 
 function clear() {
     if (hasClips.value && confirm('Are you sure you want to clear ?')) {
@@ -23,16 +23,16 @@ function clear() {
     }
 }
 
-function toggleFavorites() {
-    showFavs.value = !showFavs.value
-    clipboardStore.favorites = showFavs.value
+function toggleStarred() {
+    showStarred.value = !showStarred.value
+    clipboardStore.onlyStarred = showStarred.value
 }
 </script>
 
 <template>
     <div class="fixed flex flex-row bottom-0 left-0 h-11 w-full bg-gray-200 space-x-4 justify-center items-center text-gray-600">
-        <ToolButton class="w-8 h-8" @click="toggleFavorites">
-            <IconFavoriteSolid v-if="showFavs" />
+        <ToolButton class="w-8 h-8" @click="toggleStarred">
+            <IconFavoriteSolid v-if="showStarred" />
             <IconFavoriteOutline v-else />
         </ToolButton>
         <ToolButton class="w-8 h-8" @click="clear" :disabled="!hasClips">

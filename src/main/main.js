@@ -32,11 +32,11 @@ const createWindow = () => {
   // Start clipboard watcher and send new clips to renderer process.
   clipboardEventEmitter
     .start()
-    .on('clipboard:new', (clipEntity) => mainWindow.webContents.send('clipboard:new', clipEntity));
+    .on('clipboard:new', (clipModel) => mainWindow.webContents.send('clipboard:new', clipModel));
 
   // Handlers from renderer.
-  ipcMain.on('clip:remove', (event, data) => {
-    if (clipboardEventEmitter.isLastCopied(data.id)) {
+  ipcMain.on('clip:remove', (event, id) => {
+    if (clipboardEventEmitter.isLastCopied(id)) {
       clipboardEventEmitter.reset()
     }
   });

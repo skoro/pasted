@@ -3,17 +3,17 @@ import ToolButton from './ToolButton.vue'
 import IconDotsHorizontal from './icons/IconDotsHorizontal.vue'
 import IconFavoriteOutline from './icons/IconFavoriteOutline.vue'
 import IconFavoriteSolid from './icons/IconFavoriteSolid.vue'
-import Clip from '../stores/clip-entity'
 
 defineEmits([
     'switch-view',
-    'toggle-favorite',
+    'toggle-starred',
     'copy-item',
+    'remove-item',
 ])
 
 const props = defineProps({
     clip: {
-        type: Clip,
+        type: Object,
         required: true,
     }
 })
@@ -29,8 +29,8 @@ const props = defineProps({
         <ToolButton @click="$emit('switch-view', 'menu')">
             <IconDotsHorizontal />
         </ToolButton>
-        <ToolButton @click="$emit('toggle-favorite')">
-            <IconFavoriteSolid v-if="clip.favorite" />
+        <ToolButton @click="$emit('toggle-starred')">
+            <IconFavoriteSolid v-if="clip.starred" />
             <IconFavoriteOutline v-else />
         </ToolButton>
     </div>
