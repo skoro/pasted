@@ -65,7 +65,12 @@ export const useClipboardStore = defineStore('clips', () => {
 
   function getModelsFromDb() {
     clear()
-    db.getAll(put)
+    /** @type {import("../../models/clip").Model[]} */
+    const tmp = []
+    db.getAll(
+      (model) => tmp.push(model),
+      () => modelCollection.value = tmp.toSorted((a, b) => b.created - a.created)
+    )
   }
 
   return { clips, onlyStarred, filter, put, remove, clear, toggleStarred, getModelsFromDb }
