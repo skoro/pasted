@@ -24,6 +24,37 @@ export const useClipboardStore = defineStore('clips', () => {
    * @param {import("../../models/clip").Model} model
    */
   function put(model) {
+    /** @type {number} */
+    const existIndex = modelCollection.value.findIndex((item) => item.hash === model.hash)
+
+    if (existIndex >= 0) {
+      moveToTop(existIndex)
+    } else {
+      append(model)
+    }
+  }
+  
+  /**
+   * @param {number} fromIndex
+   */
+  function moveToTop(fromIndex) {
+    /**
+     * @type {import("../../models/clip").Model}
+     */
+    const model = modelCollection.value.at(fromIndex)
+
+    model.created = Date.now()
+
+    modelCollection.value.splice(fromIndex, 1)
+    modelCollection.value.unshift(model)
+
+    db.update(toRaw(model))
+  }
+
+  /**
+   * @param {import("../../models/clip").Model} model
+   */
+  function append(model) {
     if (modelCollection.value.length >= MAX_BUFFER) {
       modelCollection.value.pop()
     }
