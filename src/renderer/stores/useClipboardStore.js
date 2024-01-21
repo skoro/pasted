@@ -65,11 +65,23 @@ export const useClipboardStore = defineStore('clips', () => {
 
   function getModelsFromDb() {
     clear()
+    
     /** @type {import("../../models/clip").Model[]} */
     const tmp = []
+
     db.getAll(
+      /**
+       * @param {import("../../models/clip").Model} model
+       */
       (model) => tmp.push(model),
-      () => modelCollection.value = tmp.toSorted((a, b) => b.created - a.created)
+      () => modelCollection.value = tmp.toSorted(
+        /**
+         * @param {import("../../models/clip").Model} a 
+         * @param {import("../../models/clip").Model} b 
+         * @returns {number}
+         */
+        (a, b) => b.created - a.created
+      )
     )
   }
 
