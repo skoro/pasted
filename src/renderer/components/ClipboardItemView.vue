@@ -21,7 +21,7 @@ const props = defineProps({
 
 <template>
     <div class="flex-1 overflow-hidden">
-        <a href="#" @click="$emit('copy-item')">
+        <a href="#" @click.prevent="$emit('copy-item')">
             {{ clip.data }}
         </a>
     </div>
