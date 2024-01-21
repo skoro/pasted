@@ -7,6 +7,9 @@ function open(onopen, onerror) {
 
     request.onerror = onerror
     
+    /**
+     * @param {Event} event
+     */
     request.onupgradeneeded = (event) => {
         /** @type {IDBDatabase} */
         const _db = event.target.result
@@ -15,6 +18,9 @@ function open(onopen, onerror) {
         objectStore.createIndex('hash', 'hash', { unique: false })
     }
     
+    /**
+     * @param {Event} event 
+     */
     request.onsuccess = (event) => {
         /** @type {IDBDatabase} */
         db = event.target.result
@@ -30,6 +36,7 @@ function isOpened() {
 }
 
 /**
+ * @private
  * @param {string} [mode=readonly] mode readonly, readwrite, versionchange
  * @returns {IDBObjectStore}
  */
@@ -38,29 +45,55 @@ function getClipsObjectStore(mode = 'readonly') {
 }
 
 /**
+ * @callback onsuccess
+ * @param {Event} event
+ */
+
+/**
+ * @callback onerror
+ * @param {Event} event
+ */
+
+/**
  * @param {Object} clip
  * @param {string} clip.id
- * @param {*} onsuccess 
+ * @param {onsuccess} onsuccess
  */
 function add(clip, onsuccess) {
     getClipsObjectStore('readwrite').add(clip).onsuccess = onsuccess
 }
 
 /**
+ * @callback onrecord
+ * @param {Object} value
+ */
+
+/**
  * @param {Object} clip 
  * @param {string} clip.id
- * @param {*} onsuccess
- * @param {*} onerror
+ * @param {onrecord} onrecord
+ * @param {onerror} onerror
  */
-function get(clip, onsuccess, onerror) {
+function get(clip, onrecord, onerror) {
     const request = getClipsObjectStore().get(clip.id)
-    request.onsuccess = onsuccess
+
+    onrecord && (request.onsuccess = () => onrecord(request.result))
     request.onerror = onerror
 }
 
+/**
+ * @callback onnomorecord
+ * 
+ * @param {onrecord} onrecord 
+ * @param {onnomorecord} onnomorecord 
+ */
 function getAll(onrecord, onnomorecord) {
-    const objectStore = getClipsObjectStore()
-    objectStore.openCursor().onsuccess = (event) => {
+    const cursor = getClipsObjectStore().openCursor()
+
+    /**
+     * @param {Event} event 
+     */
+    cursor.onsuccess = (event) => {
         const cursor = event.target.result
         if (cursor) {
             onrecord && onrecord(cursor.value)
@@ -71,11 +104,18 @@ function getAll(onrecord, onnomorecord) {
     }
 }
 
+/**
+ * @param {Object} clip
+ * @param {onsuccess} onsuccess 
+ */
 function update(clip, onsuccess) {
     const request = getClipsObjectStore('readwrite').put(clip)
     request.onsuccess = onsuccess
 }
 
+/**
+ * @param {string} id
+ */
 function remove(id) {
     getClipsObjectStore('readwrite').delete(id)
 }
