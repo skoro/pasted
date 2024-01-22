@@ -17,9 +17,27 @@ const showStarred = ref(false)
 onMounted(() => Mousetrap.bind(keyboard.toggleFavorites, toggleStarred))
 
 function clear() {
-    if (hasClips.value && confirm('Are you sure you want to clear ?')) {
-        clipboardStore.clear()
+    if (!hasClips.value) {
+        return
+    }
+    
+    let msg
+    let clearCallback
+    
+    if (showStarred.value) {
+        msg = 'Are you sure you want to remove all starred items ?'
+        clearCallback = (item) => item.starred
+    } else {
+        msg = 'Are you sure you want to remove items ?'
+        clearCallback = (item) => ! item.starred
+    }
+
+    if (confirm(msg)) {
+        clipboardStore.clear(clearCallback)
         window.electronAPI.clearList()
+        if (showStarred.value && ! hasClips.value) {
+            toggleStarred()
+        }
     }
 }
 
