@@ -55,9 +55,16 @@ export const useClipboardStore = defineStore('clips', () => {
    * @param {import("../../models/clip").Model} model
    */
   function append(model) {
-    if (modelCollection.value.length >= MAX_BUFFER) {
-      modelCollection.value.pop()
+    // only non-starred models
+    const models = modelCollection.value.filter((model) => !model.starred)
+
+    // remove bottom models to fit space to new model
+    while (models.length >= MAX_BUFFER) {
+      const toRemove = models.at(-1)
+      remove(toRemove.id)
+      models.splice(-1, 1); // must be removed to maintain "length" property
     }
+
     modelCollection.value.unshift(model)
     db.add(model)
   }
