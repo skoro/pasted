@@ -85,8 +85,8 @@ export const useClipboardStore = defineStore('clips', () => {
     }
   }
 
-  function clear() {
-    clips.value.forEach((i) => remove(i.id));
+  function clear(callback) {
+    clips.value.forEach((i) => callback(i) && remove(i.id));
   }
 
   /**
