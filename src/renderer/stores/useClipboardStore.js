@@ -58,11 +58,11 @@ export const useClipboardStore = defineStore('clips', () => {
     // only non-starred models
     const models = modelCollection.value.filter((model) => !model.starred)
 
-    if (models.length >= MAX_BUFFER) {
+    // remove bottom models to fit space to new model
+    while (models.length >= MAX_BUFFER) {
       const toRemove = models.at(-1)
-      const index = modelCollection.value.findIndex(model => model.id === toRemove.id)
-      modelCollection.value.splice(index, 1)
-      db.remove(toRemove.id)
+      remove(toRemove.id)
+      models.splice(-1, 1); // must be removed to maintain "length" property
     }
 
     modelCollection.value.unshift(model)
