@@ -38,6 +38,9 @@ class ClipboardEventEmitter extends EventEmitter {
     setTimeout(this._loop.bind(this), 800);
   }
 
+  /**
+   * @returns {import("../models/clip").Model}
+   */
   _getText() {
     const text = clipboard.readText()
     if (text.length) {
@@ -45,6 +48,9 @@ class ClipboardEventEmitter extends EventEmitter {
     }
   }
 
+  /**
+   * @returns {import("../models/clip").Model}
+   */
   _getImage() {
     const image = clipboard.readImage()
     if (!image.isEmpty()) {
