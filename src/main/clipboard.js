@@ -1,4 +1,4 @@
-import { clipboard } from "electron";
+import { clipboard, nativeImage } from "electron";
 import { EventEmitter } from "node:events";
 import Clip from '../models/clip'
 
@@ -25,16 +25,31 @@ class ClipboardEventEmitter extends EventEmitter {
     if (!this.isRunning) {
       return;
     }
-    /** @type {string} */
-    const text = clipboard.readText();
-    if (text.length) {
-      const newClip = Clip.factory(text)
-      if (!this._recent || !Clip.equals(this._recent, newClip)) {
-        this._recent = newClip;
-        this.emit("clipboard:new", newClip);
+
+    let newModel = this._getText() ?? this._getImage()
+
+    if (newModel) {
+      if (!this._recent || !Clip.equals(this._recent, newModel)) {
+        this._recent = newModel
+        this.emit('clipboard:new', newModel)
       }
     }
+
     setTimeout(this._loop.bind(this), 800);
+  }
+
+  _getText() {
+    const text = clipboard.readText()
+    if (text.length) {
+      return Clip.factory(text)
+    }
+  }
+
+  _getImage() {
+    const image = clipboard.readImage()
+    if (!image.isEmpty()) {
+      return Clip.image(image)
+    }
   }
 
   /**
@@ -54,8 +69,14 @@ class ClipboardEventEmitter extends EventEmitter {
    * @param {import("../models/clip").Model} clip
    */
   copy(clip) {
+    if (clip.image) {
+      const image = nativeImage.createFromDataURL(clip.data)
+      clipboard.writeImage(image)
+    } else {
+      clipboard.writeText(clip.data)
+    }
+    
     this._recent = clip
-    clipboard.writeText(clip.data)
   }
 }
 
