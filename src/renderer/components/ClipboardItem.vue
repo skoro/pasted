@@ -2,7 +2,7 @@
 import ClipboardItemView from './ClipboardItemView.vue';
 import ClipboardItemMenu from './ClipboardItemMenu.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
-import { shallowRef, toRaw } from 'vue';
+import { ref, shallowRef, toRaw } from 'vue';
 
 const props = defineProps({
     clip: {
@@ -11,8 +11,8 @@ const props = defineProps({
     }
 })
 
+const isCopied = ref(false)
 const clipboardStore = useClipboardStore()
-
 const context = shallowRef(ClipboardItemView)
 
 function setViewContext() {
@@ -33,6 +33,8 @@ function onSwitchContext(view) {
 }
 
 function onCopyItem() {
+    isCopied.value = true
+    setTimeout(() => isCopied.value = false, 800)
     window.electronAPI.selectClipModel(toRaw(props.clip))
     setViewContext()
 }
@@ -54,7 +56,10 @@ function onRemoveItem() {
 </script>
 
 <template>
-    <div class="flex p-2 m-2 h-20 rounded hover:ring-2 hover:ring-gray-200 shadow text-black text-sm font-normal">
+    <div
+        class="flex p-2 m-2 h-20 rounded hover:ring-2 hover:ring-gray-200 shadow text-black text-sm font-normal"
+        :class="{ 'outline': isCopied, 'outline-sky-300': isCopied }"
+    >
         <component
             :is="context"
             :clip="clip"
