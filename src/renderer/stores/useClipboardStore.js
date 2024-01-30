@@ -25,7 +25,7 @@ export const useClipboardStore = defineStore('clips', () => {
    */
   function put(model) {
     /** @type {number} */
-    const existIndex = modelCollection.value.findIndex((item) => item.hash === model.hash)
+    const existIndex = modelCollection.value.findIndex((item) => item.data === model.data)
 
     if (existIndex >= 0) {
       moveToTop(existIndex)
