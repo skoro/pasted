@@ -23,7 +23,7 @@ const props = defineProps({
     <div class="flex-1 overflow-hidden">
         <a href="#" @click.prevent="$emit('copy-item')">
             <img class="object-scale-down h-20" v-if="clip.image" :src="clip.data"/>
-            <span v-else>{{ clip.data }}</span>
+            <span v-else>{{ clip.data.substring(0, 199) }}</span>
         </a>
     </div>
     <div class="flex flex-col text-slate-800 w-6 space-y-4 p-1">
