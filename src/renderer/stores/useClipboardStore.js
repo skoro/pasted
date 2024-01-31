@@ -123,5 +123,14 @@ export const useClipboardStore = defineStore('clips', () => {
     )
   }
 
-  return { clips, onlyStarred, filter, put, remove, clear, toggleStarred, getModelsFromDb }
+  /**
+   * @returns {?import("../../models/clip").Model}
+   */
+  function peekTop() {
+    if (modelCollection.value.length > 0) {
+      return modelCollection.value[0]
+    }
+  }
+
+  return { clips, onlyStarred, filter, put, remove, clear, toggleStarred, getModelsFromDb, peekTop }
 });

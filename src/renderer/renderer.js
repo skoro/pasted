@@ -32,12 +32,15 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './components/App.vue';
 import { useClipboardStore } from './stores/useClipboardStore';
+import { pluginTrimStrings } from './plugins/plugin-trim-strings';
 import db from './stores/db'
 
 const app = createApp(App);
 const pinia = createPinia();
 
 app.use(pinia);
+pinia.use(pluginTrimStrings);
+
 app.mount('#app');
 
 const clipboardStore = useClipboardStore();
