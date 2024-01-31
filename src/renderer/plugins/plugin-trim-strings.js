@@ -7,8 +7,6 @@ const electron = window.electronAPI
 
 /**
  * @param {import("../../models/clip").Model} model
- *
- * @returns {import("../../models/clip").Model}
  */
 function trimStrings(model) {
     const trimmed = Clip.factory(model.data.trim())
@@ -25,8 +23,8 @@ function trimStrings(model) {
 
 /**
  * @param {import("../../models/clip").Model} model
- *
- * @returns {import("../../models/clip").Model}
+ * 
+ * @throws {Error} A string is empty.
  */
 function ignoreEmptyStrings(model) {
     if (model.data.trim().length === 0) {
