@@ -15,7 +15,6 @@ function open(onopen, onerror) {
         const _db = event.target.result
         const objectStore = _db.createObjectStore('clips', { keyPath: 'id' })
         objectStore.createIndex('id', 'id', { unique: true })
-        objectStore.createIndex('hash', 'hash', { unique: false })
     }
     
     /**

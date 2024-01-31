@@ -1,8 +1,7 @@
-import hash from 'hash.js'
 import { v4 as uuid } from 'uuid'
 
 /**
- * @typedef {{id: string, data: string, starred: boolean, hash: string, created: number, image: boolean}} Model
+ * @typedef {{id: string, data: string, starred: boolean, created: number, image: boolean}} Model
  */
 
 /**
@@ -19,7 +18,6 @@ function factory(data, starred = false, image = false) {
         data: String(data),
         starred: Boolean(starred),
         id: uuid(),
-        hash: createCheckSum(data),
         created: Date.now(),
         image: Boolean(image),
     }
@@ -38,14 +36,6 @@ function image(image, starred = false) {
 }
 
 /**
- * @param {string} data 
- * @returns {string}
- */
-function createCheckSum(data) {
-    return hash.sha256().update(data).digest('hex')
-}
-
-/**
  * Has the models the same data.
  *
  * @param {Model} modelA
@@ -54,7 +44,7 @@ function createCheckSum(data) {
  * @returns {boolean}
  */
 function equals(modelA, modelB) {
-    return modelA.hash === modelB.hash
+    return modelA.data === modelB.data
 }
 
 /**

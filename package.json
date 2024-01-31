@@ -33,7 +33,6 @@
     "@vitejs/plugin-vue": "^5.0.2",
     "autoprefixer": "^10.4.16",
     "electron": "28.1.0",
-    "hash.js": "^1.1.7",
     "mousetrap": "^1.6.5",
     "pinia": "^2.1.7",
     "postcss": "^8.4.32",
