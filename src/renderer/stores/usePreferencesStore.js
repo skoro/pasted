@@ -4,8 +4,8 @@ import { ref } from "vue"
 export const usePreferencesStore = defineStore('prefs', () => {
 
     // state
-    const trimStrings = ref(true)
-    const ignoreEmptyStrings = ref(true)
+    const trimStrings = ref(false)
+    const ignoreEmptyStrings = ref(false)
 
     return {
         trimStrings,
