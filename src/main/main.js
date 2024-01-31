@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, nativeImage, Menu } from 'electron';
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 
@@ -7,14 +7,14 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
+const createMainWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 380,
     height: 640,
     minWidth: 240,
     minHeight: 180,
-    icon: path.join(__dirname, '../../resources/icon.png'),
+    icon: path.join(__dirname, '..', '..', 'resources', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -42,12 +42,40 @@ const createWindow = () => {
   });
 
   ipcMain.on('clip:select', (event, data) => clipboardEventEmitter.copy(data));
+
+  return mainWindow;
+};
+
+// Create and setup the application tray icon.
+/**
+ * @param {BrowserWindow} mainWindow 
+ */
+const createTrayIcon = (mainWindow) => {
+  const icon = nativeImage.createFromPath(path.join(__dirname, '..', '..', 'resources', 'icon.png'));
+  const tray = new Tray(icon);
+  
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Quit', role: 'quit' }
+  ]);
+
+  tray.setContextMenu(contextMenu);
+
+  tray.on('click', () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  const mainWindow = createMainWindow();
+  createTrayIcon(mainWindow);
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
