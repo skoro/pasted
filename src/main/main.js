@@ -59,6 +59,7 @@ const createTrayIcon = (mainWindow) => {
   ]);
 
   tray.setContextMenu(contextMenu);
+  tray.setToolTip('Pasted');
 
   tray.on('click', () => {
     if (mainWindow.isVisible()) {
