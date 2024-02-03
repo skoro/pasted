@@ -29,7 +29,7 @@ onMounted(() => {
 
 function clear() {
     if (!hasClips.value) {
-        return
+        return false
     }
 
     let msg
@@ -70,7 +70,7 @@ function clear() {
             <IconImageSolid v-if="images" />
             <IconImageOutline v-else />
         </ToolButton>
-        <ToolButton class="w-8 h-8" @click="clear" :disabled="!hasClips">
+        <ToolButton class="w-8 h-8" @click="clear">
             <IconTrash />
         </ToolButton>
     </div>
