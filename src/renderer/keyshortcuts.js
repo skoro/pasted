@@ -1,7 +1,8 @@
 const keyboard = {
     "search": "ctrl+k",
-    "toggleFavorites": "ctrl+/",
+    "toggleStarred": "ctrl+s",
     "toggleImages": "ctrl+i",
+    "removeItems": "ctrl+r",
 }
 
 export { keyboard }

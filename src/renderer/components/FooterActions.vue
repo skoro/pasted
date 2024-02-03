@@ -22,7 +22,7 @@ watch(starred, (newStarred) => clipboardStore.onlyStarred = newStarred)
 watch(images, (newImages) => clipboardStore.withImages = newImages)
 
 onMounted(() => {
-    Mousetrap.bind(keyboard.toggleFavorites, () => starred.value = !starred.value)
+    Mousetrap.bind(keyboard.toggleStarred, () => starred.value = !starred.value)
     Mousetrap.bind(keyboard.toggleImages, () => images.value = !images.value)
     Mousetrap.bind(keyboard.removeItems, clear)
 })
@@ -35,13 +35,13 @@ function clear() {
     let msg
     let clearCallback
 
-    if (showStarred.value && showImages.value) {
+    if (starred.value && images.value) {
         msg = 'Are you sure you want to remove starred images ?'
         clearCallback = (item) => item.starred && item.image
-    } else if (showStarred.value) {
+    } else if (starred.value) {
         msg = 'Are you sure you want to remove starred items ?'
         clearCallback = (item) => item.starred
-    } else if (showImages.value) {
+    } else if (images.value) {
         msg = 'Are you sure you want to remove images ?'
         clearCallback = (item) => item.image && !item.starred
     } else {
