@@ -52,8 +52,11 @@ function clear() {
     if (confirm(msg)) {
         clipboardStore.clear(clearCallback)
         window.electronAPI.clearList()
-        if (showStarred.value && !hasClips.value) {
-            starred.value = true
+        if (starred.value && !hasClips.value) {
+            starred.value = false
+        }
+        if (images.value && !hasImages.value) {
+            images.value = false
         }
     }
 }
