@@ -19,7 +19,7 @@ const starred = ref(false)
 const images = ref(false)
 
 watch(starred, (newStarred) => clipboardStore.onlyStarred = newStarred)
-watch(images, (newImages) => clipboardStore.withImages = newImages)
+watch(images, (newImages) => clipboardStore.withImages = newImages && hasImages.value)
 
 onMounted(() => {
     Mousetrap.bind(keyboard.toggleStarred, () => starred.value = !starred.value)
