@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Tray, nativeImage, Menu } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, nativeImage, Menu, MenuItem } from 'electron';
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 
@@ -53,21 +53,33 @@ const createMainWindow = () => {
 const createTrayIcon = (mainWindow) => {
   const icon = nativeImage.createFromPath(path.join(__dirname, '..', '..', 'resources', 'icon.png'));
   const tray = new Tray(icon);
-  
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Quit', role: 'quit' }
-  ]);
 
-  tray.setContextMenu(contextMenu);
-  tray.setToolTip('Pasted');
-
-  tray.on('click', () => {
+  const showHideCallback = () => {
     if (mainWindow.isVisible()) {
       mainWindow.hide();
     } else {
       mainWindow.show();
     }
-  });
+  };
+  
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Quit', role: 'quit' }
+  ]);
+
+  // Gnome tray does not support actions by icon clicking.
+  // There is a menu item does the same as clicking on the icon to show/hide the main window.
+  if (process.platform === 'linux') {
+    contextMenu.insert(0, new MenuItem({
+      label: 'Show/Hide',
+      click: () => showHideCallback(),
+    }));
+    contextMenu.insert(1, new MenuItem({ type: 'separator' }));
+  }
+
+  tray.setContextMenu(contextMenu);
+  tray.setToolTip('Pasted');
+
+  tray.on('click', () => showHideCallback());
 };
 
 // This method will be called when Electron has finished
