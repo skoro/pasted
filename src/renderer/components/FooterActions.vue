@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import Mousetrap from 'mousetrap';
 import ToolButton from './ToolButton.vue';
 import IconTrash from './icons/IconTrash.vue';
@@ -15,19 +15,23 @@ const clipboardStore = useClipboardStore()
 const hasClips = computed(() => clipboardStore.clips.length > 0)
 const hasImages = computed(() => clipboardStore.images.length > 0)
 
-const showStarred = ref(false)
-const showImages = ref(false)
+const starred = ref(false)
+const images = ref(false)
+
+watch(starred, (newStarred) => clipboardStore.onlyStarred = newStarred)
+watch(images, (newImages) => clipboardStore.withImages = newImages)
 
 onMounted(() => {
-    Mousetrap.bind(keyboard.toggleFavorites, toggleStarred)
-    Mousetrap.bind(keyboard.toggleImages, toggleImages)
+    Mousetrap.bind(keyboard.toggleFavorites, () => starred.value = !starred.value)
+    Mousetrap.bind(keyboard.toggleImages, () => images.value = !images.value)
+    Mousetrap.bind(keyboard.removeItems, clear)
 })
 
 function clear() {
     if (!hasClips.value) {
         return
     }
-    
+
     let msg
     let clearCallback
 
@@ -42,37 +46,28 @@ function clear() {
         clearCallback = (item) => item.image && !item.starred
     } else {
         msg = 'Are you sure you want to remove items ?'
-        clearCallback = (item) => ! item.starred
+        clearCallback = (item) => !item.starred
     }
 
     if (confirm(msg)) {
         clipboardStore.clear(clearCallback)
         window.electronAPI.clearList()
-        if (showStarred.value && ! hasClips.value) {
-            toggleStarred()
+        if (showStarred.value && !hasClips.value) {
+            starred.value = true
         }
     }
-}
-
-function toggleStarred() {
-    showStarred.value = !showStarred.value
-    clipboardStore.onlyStarred = showStarred.value
-}
-
-function toggleImages() {
-    showImages.value = !showImages.value
-    clipboardStore.withImages = showImages.value
 }
 </script>
 
 <template>
-    <div class="fixed flex flex-row bottom-0 left-0 h-11 w-full bg-gray-200 space-x-4 justify-center items-center text-gray-600">
-        <ToolButton class="w-8 h-8" @click="toggleStarred">
-            <IconStarSolid v-if="showStarred" />
+    <div
+        class="fixed flex flex-row bottom-0 left-0 h-11 w-full bg-gray-200 space-x-4 justify-center items-center text-gray-600">
+        <ToolButton class="w-8 h-8" @click="starred = !starred">
+            <IconStarSolid v-if="starred" />
             <IconStarOutline v-else />
         </ToolButton>
-        <ToolButton class="w-8 h-8" v-if="hasImages" @click="toggleImages">
-            <IconImageSolid v-if="showImages" />
+        <ToolButton class="w-8 h-8" v-if="hasImages" @click="images = !images">
+            <IconImageSolid v-if="images" />
             <IconImageOutline v-else />
         </ToolButton>
         <ToolButton class="w-8 h-8" @click="clear" :disabled="!hasClips">
