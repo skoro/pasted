@@ -59,6 +59,8 @@ function clear() {
             images.value = false
         }
     }
+
+    return false
 }
 </script>
 
