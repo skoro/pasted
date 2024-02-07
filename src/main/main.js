@@ -1,6 +1,7 @@
-import { app, BrowserWindow, ipcMain, Tray, nativeImage, Menu, MenuItem } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, nativeImage, Menu, MenuItem, globalShortcut } from 'electron';
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
+import { keyboard } from '../renderer/keyshortcuts';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -82,12 +83,30 @@ const createTrayIcon = (mainWindow) => {
   tray.on('click', () => showHideCallback());
 };
 
+/**
+ * @param {BrowserWindow} mainWindow 
+ */
+const registerGlobalShortcut = (mainWindow) => {
+  const ret = globalShortcut.register(keyboard.toggleAppFocus, () => {
+    if (mainWindow.isFocused()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
+
+  if (!ret) {
+    console.error("globalShortcut.register failed !");
+  }
+};
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   const mainWindow = createMainWindow();
   createTrayIcon(mainWindow);
+  registerGlobalShortcut(mainWindow);
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -109,3 +128,7 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll();
+});
