@@ -19,16 +19,17 @@ const props = defineProps({
     }
 })
 
-const formatted = computed(() => {
-    return props.clip.data.substring(0, 199).trimStart()
-})
+const lines = computed(() => props.clip.data.substring(0, 199).trimStart().split("\n"))
+const isImage = computed(() => props.clip.image)
 </script>
 
 <template>
     <div class="flex-1 overflow-hidden">
         <a href="#" @click.prevent="$emit('copy-item')">
-            <img class="object-scale-down h-20" v-if="clip.image" :src="clip.data"/>
-            <pre v-else>{{ formatted }}</pre>
+            <img class="object-scale-down h-20" v-if="isImage" :src="clip.data"/>
+            <ul v-if="!isImage" v-for="(line, index) in lines" :key="index">
+                <li class="text-gray-800">{{ line }}</li>
+            </ul>
         </a>
     </div>
     <div class="flex flex-col text-slate-800 w-6 space-y-4 p-1">
