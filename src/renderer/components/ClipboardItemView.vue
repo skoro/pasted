@@ -25,6 +25,8 @@ const props = defineProps({
 })
 
 const isShortcutIndex = computed(() => props.index > 0 && props.index < 10)
+const lines = computed(() => props.clip.data.substring(0, 199).trimStart().split("\n"))
+const isImage = computed(() => props.clip.image)
 
 onMounted(() => Mousetrap.bind(`alt+${props.index}`, copyItem))
 
@@ -36,8 +38,10 @@ function copyItem() {
 <template>
     <div class="flex-1 overflow-hidden">
         <a href="#" @click.prevent="copyItem">
-            <img class="object-scale-down h-20" v-if="clip.image" :src="clip.data"/>
-            <span v-else>{{ clip.data.substring(0, 199) }}</span>
+            <img class="object-scale-down h-20" v-if="isImage" :src="clip.data"/>
+            <ul v-if="!isImage" v-for="(line, index) in lines" :key="index">
+                <li class="text-gray-800">{{ line }}</li>
+            </ul>
         </a>
     </div>
     <div v-if="isShortcutIndex" class="flex flex-col w-6 mr-1">
