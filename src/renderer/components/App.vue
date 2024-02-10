@@ -13,7 +13,7 @@
     <HeaderActions/>
 
     <div class="my-11 space-y-2 p-1">
-      <ClipboardItem v-for="clip in clipboard.clips" :key="clip.id" :clip="clip">
+      <ClipboardItem v-for="(clip, index) in clipboard.clips" :key="clip.id" :clip="clip" :index="index + 1">
       </ClipboardItem>
     </div>
 
