@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onUpdated, onMounted } from 'vue'
 import Mousetrap from 'mousetrap'
 import ToolButton from './ToolButton.vue'
 import IconDotsHorizontal from './icons/IconDotsHorizontal.vue'
@@ -28,10 +28,15 @@ const isShortcutIndex = computed(() => props.index > 0 && props.index < 10)
 const lines = computed(() => props.clip.data.substring(0, 199).trimStart().split("\n"))
 const isImage = computed(() => props.clip.image)
 
-onMounted(() => Mousetrap.bind(`alt+${props.index}`, copyItem))
+onMounted(bindShortcut)
+onUpdated(bindShortcut)
 
 function copyItem() {
     emit('copy-item')
+}
+
+function bindShortcut() {
+    Mousetrap.bind(`alt+${props.index}`, copyItem)
 }
 </script>
 
