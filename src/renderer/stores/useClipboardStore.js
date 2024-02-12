@@ -11,11 +11,18 @@ export const useClipboardStore = defineStore('clips', () => {
 
   const filter = ref('');
   const onlyStarred = ref(false)
+  const withImages = ref(false)
   
   const clips = computed(() =>
     modelCollection.value
       .filter((i) => onlyStarred.value ? i.starred : true)
       .filter((i) => filter.value ? Model.contains(i, filter.value) : true)
+      .filter((i) => withImages.value ? i.image : true)
+  )
+
+  const images = computed(() =>
+    modelCollection.value
+      .filter((i) => i.image)
   )
 
   // actions
@@ -132,5 +139,19 @@ export const useClipboardStore = defineStore('clips', () => {
     }
   }
 
-  return { clips, onlyStarred, filter, put, remove, clear, toggleStarred, getModelsFromDb, peekTop }
+  return {
+    // state
+    clips,
+    images,
+    onlyStarred,
+    withImages,
+    filter,
+    // actions
+    put,
+    remove,
+    clear,
+    toggleStarred,
+    getModelsFromDb,
+    peekTop
+  }
 });
