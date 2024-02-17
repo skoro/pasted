@@ -68,9 +68,7 @@ function toggleStarred() {
 
         <div class="my-11 space-y-2 p-1">
             <img v-if="clip.image" :src="clip.data"/>
-            <pre v-else>
-                {{ clip.data }}
-            </pre>
+            <pre v-else>{{ clip.data }}</pre>
         </div>
     </div>
 </template>
