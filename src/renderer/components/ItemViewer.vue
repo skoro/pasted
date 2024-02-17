@@ -4,6 +4,8 @@ import ToolButton from './ToolButton.vue'
 import IconCopy from './icons/IconCopy.vue'
 import IconTrash from './icons/IconTrash.vue'
 import IconCross from './icons/IconCross.vue'
+import IconStarOutline from './icons/IconStarOutline.vue'
+import IconStarSolid from './icons/IconStarSolid.vue'
 import { useClipboardStore } from '../stores/useClipboardStore'
 import { toRaw, onMounted } from 'vue'
 import Mousetrap from 'mousetrap'
@@ -37,6 +39,10 @@ function removeClip() {
 function closePage() {
     emit('close-page')
 }
+
+function toggleStarred() {
+    clipboard.toggleStarred(props.clip.id)
+}
 </script>
 
 <template>
@@ -46,6 +52,10 @@ function closePage() {
             <div class="flex space-x-4 items-center">
                 <ToolButton class="h-8 w-8" @click="copyClip">
                     <IconCopy></IconCopy>
+                </ToolButton>
+                <ToolButton class="h-8 w-8" @click="toggleStarred">
+                    <IconStarSolid v-if="clip.starred"></IconStarSolid>
+                    <IconStarOutline v-else></IconStarOutline>
                 </ToolButton>
                 <ToolButton class="h-8 w-8" @click="removeClip">
                     <IconTrash></IconTrash>
