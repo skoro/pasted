@@ -1,23 +1,34 @@
 <script setup>
-  import HeaderActions from './HeaderActions.vue';
-  import ClipboardItem from './ClipboardItem.vue';
-  import FooterActions from './FooterActions.vue';
-  import { useClipboardStore } from '../stores/useClipboardStore';
+import ItemStack from './ItemStack.vue'
+import ItemViewer from './ItemViewer.vue'
+import { ref } from 'vue'
 
-  const clipboard = useClipboardStore();
+const currentPage = ref('ItemStack')
+const clip = ref({})
+
+const pages = {
+  ItemStack,
+  ItemViewer,
+}
+
+function onClosePage() {
+  currentPage.value = 'ItemStack'
+}
+
+function onPageViewer(clipArg) {
+  currentPage.value = 'ItemViewer'
+  clip.value = clipArg
+}
 </script>
 
 <template>
-  <div class="relative">
-
-    <HeaderActions/>
-
-    <div class="my-11 space-y-2 p-1">
-      <ClipboardItem v-for="(clip, index) in clipboard.clips" :key="clip.id" :clip="clip" :index="index + 1">
-      </ClipboardItem>
-    </div>
-
-    <FooterActions/>
-
-  </div>
+  <KeepAlive>
+    <component
+      :is="pages[currentPage]"
+      :clip="clip"
+      @close-page="onClosePage"
+      @page-viewer="onPageViewer"
+    >
+    </component>
+</KeepAlive>
 </template>

@@ -3,11 +3,13 @@ import ToolButton from './ToolButton.vue'
 import IconBack from './icons/IconBack.vue'
 import IconCopy from './icons/IconCopy.vue'
 import IconTrash from './icons/IconTrash.vue'
+import IconSearch from './icons/IconSearch.vue'
 
 defineEmits([
     'switch-view',
     'copy-item',
     'remove-item',
+    'peek-item',
 ])
 </script>
 
@@ -18,6 +20,9 @@ defineEmits([
         </ToolButton>
         <ToolButton class="h-8 w-8" @click="$emit('copy-item')">
             <IconCopy />
+        </ToolButton>
+        <ToolButton class="h-8 w-8" @click="$emit('peek-item')">
+            <IconSearch />
         </ToolButton>
         <ToolButton class="h-8 w-8" @click="$emit('remove-item')">
             <IconTrash />
