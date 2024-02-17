@@ -5,7 +5,8 @@ import IconCopy from './icons/IconCopy.vue'
 import IconTrash from './icons/IconTrash.vue'
 import IconCross from './icons/IconCross.vue'
 import { useClipboardStore } from '../stores/useClipboardStore'
-import { toRaw } from 'vue'
+import { toRaw, onMounted } from 'vue'
+import Mousetrap from 'mousetrap'
 
 const props = defineProps({
     clip: {
@@ -17,6 +18,8 @@ const props = defineProps({
 const emit = defineEmits(['close-page'])
 
 const clipboard = useClipboardStore()
+
+onMounted(() => Mousetrap.bind('esc', closePage))
 
 function copyClip() {
     window.electronAPI.selectClipModel(toRaw(props.clip))
