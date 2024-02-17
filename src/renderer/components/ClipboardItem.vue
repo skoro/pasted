@@ -8,6 +8,10 @@ const props = defineProps({
     clip: {
         type: Object,
         required: true,
+    },
+    index: {
+        type: Number,
+        default: 0,
     }
 })
 
@@ -70,6 +74,7 @@ function onPeekItem() {
         <component
             :is="context"
             :clip="clip"
+            :index="index"
             @switch-view="onSwitchContext"
             @toggle-starred="onToggleStarred"
             @copy-item="onCopyItem"
