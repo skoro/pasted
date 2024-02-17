@@ -4,7 +4,6 @@ import ToolButton from './ToolButton.vue'
 import IconCopy from './icons/IconCopy.vue'
 import IconTrash from './icons/IconTrash.vue'
 import IconCross from './icons/IconCross.vue'
-import { computed } from 'vue'
 
 const props = defineProps({
     clip: {
@@ -12,8 +11,6 @@ const props = defineProps({
         required: true,
     }
 })
-
-const lines = computed(() => props.clip.data.split("\n"))
 </script>
 
 <template>
