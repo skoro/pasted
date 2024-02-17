@@ -67,6 +67,7 @@ function onRemoveItem() {
             @toggle-starred="onToggleStarred"
             @copy-item="onCopyItem"
             @remove-item="onRemoveItem"
+            @peek-item="$emit('peek-item')"
         >
         </component>
     </div>

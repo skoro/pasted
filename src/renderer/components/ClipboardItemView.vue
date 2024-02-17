@@ -10,6 +10,7 @@ defineEmits([
     'toggle-starred',
     'copy-item',
     'remove-item',
+    'peek-item',
 ])
 
 const props = defineProps({
