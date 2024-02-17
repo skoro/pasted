@@ -11,6 +11,8 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits(['peek-item'])
+
 const isCopied = ref(false)
 const clipboardStore = useClipboardStore()
 const context = shallowRef(ClipboardItemView)
@@ -53,6 +55,11 @@ function onRemoveItem() {
         window.electronAPI.removeClipModel(props.clip.id)
     }
 }
+
+function onPeekItem() {
+    emit('peek-item')
+    setViewContext()
+}
 </script>
 
 <template>
@@ -67,7 +74,7 @@ function onRemoveItem() {
             @toggle-starred="onToggleStarred"
             @copy-item="onCopyItem"
             @remove-item="onRemoveItem"
-            @peek-item="$emit('peek-item')"
+            @peek-item="onPeekItem"
         >
         </component>
     </div>

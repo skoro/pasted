@@ -22,11 +22,13 @@ function onPageViewer(clipArg) {
 </script>
 
 <template>
-  <component
-    :is="pages[currentPage]"
-    :clip="clip"
-    @close-page="onClosePage"
-    @page-viewer="onPageViewer"
-  >
-  </component>
+  <KeepAlive>
+    <component
+      :is="pages[currentPage]"
+      :clip="clip"
+      @close-page="onClosePage"
+      @page-viewer="onPageViewer"
+    >
+    </component>
+</KeepAlive>
 </template>
