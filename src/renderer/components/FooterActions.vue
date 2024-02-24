@@ -7,8 +7,11 @@ import IconStarOutline from './icons/IconStarOutline.vue';
 import IconStarSolid from './icons/IconStarSolid.vue';
 import IconImageOutline from './icons/IconImageOutline.vue';
 import IconImageSolid from './icons/IconImageSolid.vue';
+import IconPreferences from './icons/IconPreferences.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
 import { keyboard } from '../keyshortcuts';
+
+const emit = defineEmits(['open-prefs'])
 
 const clipboardStore = useClipboardStore()
 
@@ -25,6 +28,7 @@ onMounted(() => {
     Mousetrap.bind(keyboard.toggleStarred, () => starred.value = !starred.value)
     Mousetrap.bind(keyboard.toggleImages, () => images.value = !images.value)
     Mousetrap.bind(keyboard.removeItems, clear)
+    Mousetrap.bind(keyboard.openPrefs, () => emit('open-prefs'))
 })
 
 function clear() {
@@ -77,6 +81,9 @@ function clear() {
         </ToolButton>
         <ToolButton class="w-8 h-8" @click="clear">
             <IconTrash />
+        </ToolButton>
+        <ToolButton class="w-8 h-8" @click="$emit('open-prefs')">
+            <IconPreferences />
         </ToolButton>
     </div>
 </template>
