@@ -3,6 +3,7 @@ import HeaderBar from './HeaderBar.vue'
 import ToolButton from './ToolButton.vue'
 import IconCross from './icons/IconCross.vue'
 import KeyboardShortcut from './KeyboardShortcut.vue'
+import FormCheckbox from './forms/checkbox.vue'
 import { usePreferencesStore } from '../stores/usePreferencesStore'
 import { keyboard } from '../keyshortcuts'
 import Mousetrap from 'mousetrap'
@@ -33,18 +34,13 @@ function closePage() {
         </HeaderBar>
 
         <div class="my-11 p-4 divide-y divide-neutral-200">
-            <div class="flex items-center mb-4">
-                <input
-                    id="opt-1"
-                    type="checkbox"
-                    class="w-4 h-4"
-                    v-model="prefs.ignoreEmptyStrings"
-                />
-                <label
-                    for="opt-1"
-                    class="text-sm ml-3 font-medium text-gray-900"
-                >Ignore empty strings</label>
-            </div>
+
+            <FormCheckbox
+                class="mb-4"
+                v-model="prefs.ignoreEmptyStrings"
+                label="Ignore empty strings"
+                help="A string with whitespaces only won't be put to clipboard."
+            ></FormCheckbox>
 
             <div class="text-sm text-slate-400 space-y-3 pt-4">
                 <KeyboardShortcut label="Copy nth item" keys="alt+1..9"/>
