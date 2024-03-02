@@ -43,12 +43,12 @@ function closePage() {
                 <label
                     for="opt-1"
                     class="text-sm ml-3 font-medium text-gray-900"
-                >Ignore empty string</label>
+                >Ignore empty strings</label>
             </div>
 
             <div class="text-sm text-slate-400 space-y-3 pt-4">
-                <KeyboardShortcut label="Copy first 9 items" keys="alt+1..9"/>
-                <KeyboardShortcut label="Preview first 9 items" keys="alt+shift+1..9"/>
+                <KeyboardShortcut label="Copy nth item" keys="alt+1..9"/>
+                <KeyboardShortcut label="Preview nth item" keys="alt+shift+1..9"/>
                 <KeyboardShortcut label="Search" :keys="keyboard.search"/>
                 <KeyboardShortcut label="Show/hide app window" :keys="keyboard.toggleAppFocus"/>
                 <KeyboardShortcut label="Starred" :keys="keyboard.toggleStarred"/>
