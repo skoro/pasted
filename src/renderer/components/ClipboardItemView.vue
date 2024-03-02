@@ -37,8 +37,8 @@ function copyItem() {
 }
 
 function bindShortcut() {
-    Mousetrap.bind(`alt+${props.index}`, copyItem)
-    Mousetrap.bind(`alt+shift+${props.index}`, () => emit('peek-item', props.clip))
+    Mousetrap.bind(`${props.index}`, copyItem)
+    Mousetrap.bind(`alt+${props.index}`, () => emit('peek-item', props.clip))
 }
 </script>
 

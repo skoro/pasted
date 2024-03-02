@@ -43,8 +43,8 @@ function closePage() {
             ></FormCheckbox>
 
             <div class="text-sm text-slate-400 space-y-3 pt-4">
-                <KeyboardShortcut label="Copy nth item" keys="alt+1..9"/>
-                <KeyboardShortcut label="Preview nth item" keys="alt+shift+1..9"/>
+                <KeyboardShortcut label="Copy nth item" keys="1..9"/>
+                <KeyboardShortcut label="Preview nth item" keys="alt+1..9"/>
                 <KeyboardShortcut label="Search" :keys="keyboard.search"/>
                 <KeyboardShortcut label="Show/hide app window" :keys="keyboard.toggleAppFocus"/>
                 <KeyboardShortcut label="Starred" :keys="keyboard.toggleStarred"/>
