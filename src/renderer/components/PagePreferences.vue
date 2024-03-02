@@ -1,8 +1,8 @@
 <script setup>
 import HeaderBar from './HeaderBar.vue'
-import ToolButton from './ToolButton.vue'
 import IconCross from './icons/IconCross.vue'
 import KeyboardShortcut from './KeyboardShortcut.vue'
+import ToolButton from './forms/ToolButton.vue'
 import FormCheckbox from './forms/checkbox.vue'
 import { usePreferencesStore } from '../stores/usePreferencesStore'
 import { keyboard } from '../keyshortcuts'
@@ -58,4 +58,4 @@ function closePage() {
             </div>
         </div>
     </div>
-</template>
+</template>./forms/ToolButton.vue

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, computed, onMounted } from 'vue';
 import Mousetrap from 'mousetrap';
-import ToolButton from './ToolButton.vue';
+import ToolButton from './forms/ToolButton.vue';
 import IconTrash from './icons/IconTrash.vue';
 import IconStarOutline from './icons/IconStarOutline.vue';
 import IconStarSolid from './icons/IconStarSolid.vue';
