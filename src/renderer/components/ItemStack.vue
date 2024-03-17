@@ -22,7 +22,10 @@
         </ClipboardItem>
     </div>
 
-    <FooterActions/>
+    <FooterActions
+        @open-prefs="$emit('page-prefs')"
+    >
+    </FooterActions>
 
     </div>
 </template>

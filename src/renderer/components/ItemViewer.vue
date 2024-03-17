@@ -1,6 +1,6 @@
 <script setup>
 import HeaderBar from './HeaderBar.vue'
-import ToolButton from './ToolButton.vue'
+import ToolButton from './forms/ToolButton.vue'
 import IconCopy from './icons/IconCopy.vue'
 import IconTrash from './icons/IconTrash.vue'
 import IconCross from './icons/IconCross.vue'

@@ -1,5 +1,5 @@
 <script setup>
-import ToolButton from './ToolButton.vue'
+import ToolButton from './forms/ToolButton.vue'
 import IconBack from './icons/IconBack.vue'
 import IconCopy from './icons/IconCopy.vue'
 import IconTrash from './icons/IconTrash.vue'
