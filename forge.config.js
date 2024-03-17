@@ -1,5 +1,6 @@
 module.exports = {
   packagerConfig: {
+    asar: true,
     icon: './resources/icon'
   },
   rebuildConfig: {},
