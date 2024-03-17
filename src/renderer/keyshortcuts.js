@@ -4,6 +4,7 @@ const keyboard = {
     "toggleStarred": "ctrl+s",
     "toggleImages": "ctrl+i",
     "removeItems": "ctrl+r",
+    "openPrefs": "ctrl+o",
 }
 
 export { keyboard }

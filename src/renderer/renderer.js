@@ -33,18 +33,21 @@ import { createPinia } from 'pinia';
 import App from './components/App.vue';
 import { useClipboardStore } from './stores/useClipboardStore';
 import { pluginTrimStrings } from './plugins/plugin-trim-strings';
+import { pluginLocalStoragePrefs, loadPrefs } from './plugins/plugin-localstorage-prefs';
 import db from './stores/db'
 
 const app = createApp(App);
 const pinia = createPinia();
 
 app.use(pinia);
+pinia.use(pluginLocalStoragePrefs);
 pinia.use(pluginTrimStrings);
 
 app.mount('#app');
 
 const clipboardStore = useClipboardStore();
 
-db.open(clipboardStore.getModelsFromDb)
+db.open(clipboardStore.getModelsFromDb);
+loadPrefs();
 
 window.electronAPI.onClipboardNew(clipboardStore.put);

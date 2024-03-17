@@ -15,7 +15,6 @@ function trimStrings(model) {
     }
 
     model.data = trimmed.data
-    model.hash = trimmed.hash
 
     electron.removeClipModel(model.id)
     electron.selectClipModel(model)
@@ -27,7 +26,7 @@ function trimStrings(model) {
  * @throws {Error} A string is empty.
  */
 function ignoreEmptyStrings(model) {
-    if (model.data.trim().length === 0) {
+    if (!model.image && model.data.trim().length === 0) {
         electron.removeClipModel(model.id)
 
         const clipboardStore = useClipboardStore()
@@ -37,7 +36,7 @@ function ignoreEmptyStrings(model) {
             electron.selectClipModel(toRaw(top))
         }
 
-        throw new Error('ignore empty string')
+        throw new Error('plugin info: ignore empty string')
     }
 }
 
