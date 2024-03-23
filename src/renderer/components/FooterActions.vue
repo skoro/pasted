@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch, computed, onMounted } from 'vue';
-import Mousetrap from 'mousetrap';
 import ToolButton from './forms/ToolButton.vue';
 import IconTrash from './icons/IconTrash.vue';
 import IconStarOutline from './icons/IconStarOutline.vue';
@@ -9,7 +8,7 @@ import IconImageOutline from './icons/IconImageOutline.vue';
 import IconImageSolid from './icons/IconImageSolid.vue';
 import IconPreferences from './icons/IconPreferences.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
-import { keyboard } from '../keyshortcuts';
+import { keyboard, bindKey } from '../keyshortcuts';
 
 const emit = defineEmits(['open-prefs'])
 
@@ -25,10 +24,10 @@ watch(starred, (newStarred) => clipboardStore.onlyStarred = newStarred)
 watch(images, (newImages) => clipboardStore.withImages = newImages && hasImages.value)
 
 onMounted(() => {
-    Mousetrap.bind(keyboard.toggleStarred, () => starred.value = !starred.value)
-    Mousetrap.bind(keyboard.toggleImages, () => images.value = !images.value)
-    Mousetrap.bind(keyboard.removeItems, clear)
-    Mousetrap.bind(keyboard.openPrefs, () => emit('open-prefs'))
+    bindKey(keyboard.toggleStarred, () => starred.value = !starred.value)
+    bindKey(keyboard.toggleImages, () => images.value = !images.value)
+    bindKey(keyboard.removeItems, clear)
+    bindKey(keyboard.openPrefs, () => emit('open-prefs'))
 })
 
 function clear() {

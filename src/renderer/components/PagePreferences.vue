@@ -5,8 +5,7 @@ import KeyboardShortcut from './KeyboardShortcut.vue'
 import ToolButton from './forms/ToolButton.vue'
 import FormCheckbox from './forms/checkbox.vue'
 import { usePreferencesStore } from '../stores/usePreferencesStore'
-import { keyboard } from '../keyshortcuts'
-import Mousetrap from 'mousetrap'
+import { keyboard, bindEscKey } from '../keyshortcuts'
 import { onMounted } from 'vue'
 import { version } from '../../../package.json'
 
@@ -15,7 +14,7 @@ const emit = defineEmits(['close-page'])
 const prefs = usePreferencesStore()
 
 onMounted(() => {
-    Mousetrap.bind('esc', closePage)
+    bindEscKey(closePage)
 })
 
 function closePage() {
