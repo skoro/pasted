@@ -18,7 +18,12 @@ const keyboard = {
  * @param {callback} callback 
  */
 function bindKey(keyName, callback) {
-    Mousetrap.bind(keyName, callback);
+    Mousetrap.bind(keyName, (e) => {
+        if (e.preventDefault) {
+            e.preventDefault()
+        }
+        callback()
+    });
 }
 
 /**
@@ -40,4 +45,3 @@ function resetKeys() {
 }
 
 export { keyboard, bindKey, bindEscKey, unbindKey, resetKeys }
-
