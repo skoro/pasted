@@ -6,7 +6,7 @@ import IconTrash from './icons/IconTrash.vue'
 import IconCross from './icons/IconCross.vue'
 import IconStarOutline from './icons/IconStarOutline.vue'
 import IconStarSolid from './icons/IconStarSolid.vue'
-import { bindEscKey } from '../keyshortcuts'
+import { keyboard, bindKey, bindEscKey } from '../keyshortcuts'
 import { useClipboardStore } from '../stores/useClipboardStore'
 import { toRaw, onMounted } from 'vue'
 
@@ -22,6 +22,9 @@ const emit = defineEmits(['close-page'])
 const clipboard = useClipboardStore()
 
 onMounted(() => {
+    bindKey(keyboard.toggleStarred, toggleStarred)
+    bindKey(keyboard.removeItems, removeClip)
+    bindKey(keyboard.copyItem, copyClip)
     bindEscKey(closePage)
 })
 
