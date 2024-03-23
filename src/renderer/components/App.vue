@@ -2,6 +2,7 @@
 import ItemStack from './ItemStack.vue'
 import ItemViewer from './ItemViewer.vue'
 import PagePreferences from './PagePreferences.vue'
+import { resetKeys } from '../keyshortcuts'
 import { ref } from 'vue'
 
 const currentPage = ref('ItemStack')
@@ -14,20 +15,23 @@ const pages = {
 }
 
 function onPageViewer(clipArg) {
-  currentPage.value = 'ItemViewer'
+  changePageTo('ItemViewer')
   clip.value = clipArg
+}
+
+function changePageTo(pageName) {
+  resetKeys()
+  currentPage.value = pageName
 }
 </script>
 
 <template>
-  <KeepAlive>
-    <component
-      :is="pages[currentPage]"
-      :clip="clip"
-      @close-page="currentPage = 'ItemStack'"
-      @page-viewer="onPageViewer"
-      @page-prefs="currentPage = 'PagePreferences'"
-    >
-    </component>
-</KeepAlive>
+  <component
+    :is="pages[currentPage]"
+    :clip="clip"
+    @close-page="changePageTo('ItemStack')"
+    @page-viewer="onPageViewer"
+    @page-prefs="changePageTo('PagePreferences')"
+  >
+  </component>
 </template>
