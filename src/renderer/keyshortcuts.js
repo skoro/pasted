@@ -7,6 +7,7 @@ const keyboard = {
     "toggleImages": "ctrl+i",
     "removeItems": "ctrl+r",
     "openPrefs": "ctrl+o",
+    "copyItem": "space"
 }
 
 /**
