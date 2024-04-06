@@ -28,6 +28,8 @@ const createMainWindow = () => {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
   } else {
+    // Disable main menu (and default keyboard shortcuts) on release.
+    mainWindow.setMenu(null);
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
