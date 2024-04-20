@@ -5,8 +5,7 @@ import KeyboardShortcut from './KeyboardShortcut.vue'
 import ToolButton from './forms/ToolButton.vue'
 import FormCheckbox from './forms/checkbox.vue'
 import { usePreferencesStore } from '../stores/usePreferencesStore'
-import { keyboard } from '../keyshortcuts'
-import Mousetrap from 'mousetrap'
+import { keyboard, bindEscKey } from '../keyshortcuts'
 import { onMounted } from 'vue'
 import { version } from '../../../package.json'
 
@@ -15,7 +14,7 @@ const emit = defineEmits(['close-page'])
 const prefs = usePreferencesStore()
 
 onMounted(() => {
-    Mousetrap.bind('esc', closePage)
+    bindEscKey(closePage)
 })
 
 function closePage() {
@@ -44,13 +43,14 @@ function closePage() {
 
             <div class="text-sm text-slate-400 space-y-3 pt-4">
                 <KeyboardShortcut label="Copy nth item" keys="1..9"/>
-                <KeyboardShortcut label="Preview nth item" keys="alt+1..9"/>
+                <KeyboardShortcut label="Peek nth item" keys="alt+1..9"/>
                 <KeyboardShortcut label="Search" :keys="keyboard.search"/>
                 <KeyboardShortcut label="Show/hide app window" :keys="keyboard.toggleAppFocus"/>
-                <KeyboardShortcut label="Starred" :keys="keyboard.toggleStarred"/>
-                <KeyboardShortcut label="Images" :keys="keyboard.toggleImages"/>
+                <KeyboardShortcut label="Toggle starred" :keys="keyboard.toggleStarred"/>
+                <KeyboardShortcut label="Toggle images" :keys="keyboard.toggleImages"/>
                 <KeyboardShortcut label="Remove items" :keys="keyboard.removeItems"/>
                 <KeyboardShortcut label="Open preferences" :keys="keyboard.openPrefs"/>
+                <KeyboardShortcut label="Copy and close peeking item" :keys="keyboard.copyItem"/>
             </div>
 
             <div class="text-sm text-slate-400 mt-4 pt-2">
