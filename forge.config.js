@@ -31,14 +31,16 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {},
     },
-    {
-      name: '@electron-forge/maker-zip',
-      config: {},
-    },
+    // {
+    //   name: '@electron-forge/maker-zip',
+    //   config: {},
+    // },
     {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
+          name: 'pasted',
+          productName: 'Pasted',
           icon: './resources/icon.png'
         },
       },
