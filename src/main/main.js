@@ -1,9 +1,13 @@
-import { app, BrowserWindow, ipcMain, Tray, nativeImage, Menu, MenuItem, globalShortcut } from 'electron';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  app, BrowserWindow, ipcMain, Tray, nativeImage, Menu, MenuItem, globalShortcut,
+} from 'electron';
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 import { keyboard } from '../renderer/keyshortcuts';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
+// eslint-disable-next-line global-require
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
@@ -23,13 +27,16 @@ const createMainWindow = () => {
   });
 
   // and load the index.html of the app.
+  // eslint-disable-next-line no-undef
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    // eslint-disable-next-line no-undef
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
   } else {
     // Disable main menu (and default keyboard shortcuts) on release.
     mainWindow.setMenu(null);
+    // eslint-disable-next-line no-undef
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
@@ -41,7 +48,7 @@ const createMainWindow = () => {
   // Handlers from renderer.
   ipcMain.on('clip:remove', (event, id) => {
     if (clipboardEventEmitter.isLastCopied(id)) {
-      clipboardEventEmitter.reset()
+      clipboardEventEmitter.reset();
     }
   });
 
@@ -52,7 +59,7 @@ const createMainWindow = () => {
 
 // Create and setup the application tray icon.
 /**
- * @param {BrowserWindow} mainWindow 
+ * @param {BrowserWindow} mainWindow
  */
 const createTrayIcon = (mainWindow) => {
   const icon = nativeImage.createFromPath(path.join(__dirname, '..', '..', 'resources', 'icon.png'));
@@ -65,9 +72,9 @@ const createTrayIcon = (mainWindow) => {
       mainWindow.show();
     }
   };
-  
+
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Quit', role: 'quit' }
+    { label: 'Quit', role: 'quit' },
   ]);
 
   // Gnome tray does not support actions by icon clicking.
@@ -87,7 +94,7 @@ const createTrayIcon = (mainWindow) => {
 };
 
 /**
- * @param {BrowserWindow} mainWindow 
+ * @param {BrowserWindow} mainWindow
  */
 const registerGlobalShortcut = (mainWindow) => {
   const ret = globalShortcut.register(keyboard.toggleAppFocus, () => {
@@ -99,7 +106,8 @@ const registerGlobalShortcut = (mainWindow) => {
   });
 
   if (!ret) {
-    console.error("globalShortcut.register failed !");
+    // eslint-disable-next-line no-console
+    console.error('globalShortcut.register failed !');
   }
 };
 

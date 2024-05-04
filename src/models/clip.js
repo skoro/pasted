@@ -1,4 +1,5 @@
-import { v4 as uuid } from 'uuid'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuid } from 'uuid';
 
 /**
  * @typedef {{id: string, data: string, starred: boolean, created: number, image: boolean}} Model
@@ -9,30 +10,30 @@ import { v4 as uuid } from 'uuid'
  *
  * @param {string} data The clipboard data.
  * @param {boolean} [starred=false]
- * @param {boolean} [image=false] The clipboard data should be treated as an image.
+ * @param {boolean} [isImage=false] The clipboard data should be treated as an image.
  *
  * @returns {Model}
  */
-function factory(data, starred = false, image = false) {
-    return {
-        data: String(data),
-        starred: Boolean(starred),
-        id: uuid(),
-        created: Date.now(),
-        image: Boolean(image),
-    }
+function factory(data, starred = false, isImage = false) {
+  return {
+    data: String(data),
+    starred: Boolean(starred),
+    id: uuid(),
+    created: Date.now(),
+    image: Boolean(isImage),
+  };
 }
 
 /**
  * The clipboard image model factory.
  *
- * @param {import('electron').NativeImage} image
+ * @param {import('electron').NativeImage} nativeImage
  * @param {boolean} [starred=false]
  *
  * @returns {Model}
  */
-function image(image, starred = false) {
-    return factory(image.toDataURL(), starred, true)
+function image(nativeImage, starred = false) {
+  return factory(nativeImage.toDataURL(), starred, true);
 }
 
 /**
@@ -44,7 +45,7 @@ function image(image, starred = false) {
  * @returns {boolean}
  */
 function equals(modelA, modelB) {
-    return modelA.data === modelB.data
+  return modelA.data === modelB.data;
 }
 
 /**
@@ -56,8 +57,10 @@ function equals(modelA, modelB) {
  * @returns {boolean}
  */
 function contains(model, search) {
-    return !model.image
-        && model.data.toLowerCase().includes(search.toLowerCase())
+  return !model.image
+        && model.data.toLowerCase().includes(search.toLowerCase());
 }
 
-export default { factory, image, equals, contains }
+export default {
+  factory, image, equals, contains,
+};

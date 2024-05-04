@@ -1,7 +1,9 @@
-import { ref, toRaw, computed } from "vue";
-import { defineStore } from "pinia";
-import Model from "../../models/clip";
-import db from './db'
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/prefer-default-export */
+import { ref, toRaw, computed } from 'vue';
+import { defineStore } from 'pinia';
+import Model from '../../models/clip';
+import db from './db';
 
 export const useClipboardStore = defineStore('clips', () => {
   const MAX_BUFFER = 100;
@@ -10,52 +12,51 @@ export const useClipboardStore = defineStore('clips', () => {
   // state
 
   const filter = ref('');
-  const onlyStarred = ref(false)
-  const withImages = ref(false)
-  
-  const clips = computed(() =>
-    modelCollection.value
-      .filter((i) => onlyStarred.value ? i.starred : true)
-      .filter((i) => filter.value ? Model.contains(i, filter.value) : true)
-      .filter((i) => withImages.value ? i.image : true)
-  )
+  const onlyStarred = ref(false);
+  const withImages = ref(false);
 
-  const images = computed(() =>
-    modelCollection.value
-      .filter((i) => i.image)
-  )
+  const clips = computed(() => modelCollection.value
+    .filter((i) => (onlyStarred.value ? i.starred : true))
+    .filter((i) => (filter.value ? Model.contains(i, filter.value) : true))
+    .filter((i) => (withImages.value ? i.image : true)));
+
+  const images = computed(() => modelCollection.value
+    .filter((i) => i.image));
 
   // actions
 
-  /**
-   * @param {import("../../models/clip").Model} model
-   */
-  function put(model) {
-    /** @type {number} */
-    const existIndex = modelCollection.value.findIndex((item) => item.data === model.data)
-
-    if (existIndex >= 0) {
-      moveToTop(existIndex)
-    } else {
-      append(model)
-    }
-  }
-  
   /**
    * @param {number} fromIndex
    */
   function moveToTop(fromIndex) {
     /**
-     * @type {import("../../models/clip").Model}
-     */
-    const model = modelCollection.value.at(fromIndex)
+       * @type {import("../../models/clip").Model}
+       */
+    const model = modelCollection.value.at(fromIndex);
 
-    model.created = Date.now()
+    model.created = Date.now();
 
-    modelCollection.value.splice(fromIndex, 1)
-    modelCollection.value.unshift(model)
+    modelCollection.value.splice(fromIndex, 1);
+    modelCollection.value.unshift(model);
 
-    db.update(toRaw(model))
+    db.update(toRaw(model));
+  }
+
+  /**
+   * @param {string} clipId
+   * @returns {import("../../models/clip").Model|null}
+   */
+  function remove(clipId) {
+    for (let i = 0; i < modelCollection.value.length; i++) {
+      if (modelCollection.value[i].id === clipId) {
+        /** @type {import("../../models/clip").Model} */
+        const model = modelCollection.value[i];
+        db.remove(model.id);
+        modelCollection.value.splice(i, 1);
+        return model;
+      }
+    }
+    return null;
   }
 
   /**
@@ -63,32 +64,30 @@ export const useClipboardStore = defineStore('clips', () => {
    */
   function append(model) {
     // only non-starred models
-    const models = modelCollection.value.filter((model) => !model.starred)
+    const models = modelCollection.value.filter((m) => !m.starred);
 
     // remove bottom models to fit space to new model
     while (models.length >= MAX_BUFFER) {
-      const toRemove = models.at(-1)
-      remove(toRemove.id)
+      const toRemove = models.at(-1);
+      remove(toRemove.id);
       models.splice(-1, 1); // must be removed to maintain "length" property
     }
 
-    modelCollection.value.unshift(model)
-    db.add(model)
+    modelCollection.value.unshift(model);
+    db.add(model);
   }
 
   /**
-   * @param {string} clipId
-   * @returns {import("../../models/clip").Model}
+   * @param {import("../../models/clip").Model} model
    */
-  function remove(clipId) {
-    for (var i = 0; i < modelCollection.value.length; i++) {
-      if (modelCollection.value[i].id === clipId) {
-        /** @type {import("../../models/clip").Model} */
-        const model = modelCollection.value[i];
-        db.remove(model.id)
-        modelCollection.value.splice(i, 1);
-        return model;
-      }
+  function put(model) {
+    /** @type {number} */
+    const existIndex = modelCollection.value.findIndex((item) => item.data === model.data);
+
+    if (existIndex >= 0) {
+      moveToTop(existIndex);
+    } else {
+      append(model);
     }
   }
 
@@ -102,17 +101,17 @@ export const useClipboardStore = defineStore('clips', () => {
   function toggleStarred(clipId) {
     for (const clip of modelCollection.value) {
       if (clip.id === clipId) {
-        clip.starred = !clip.starred
-        db.update(toRaw(clip))
+        clip.starred = !clip.starred;
+        db.update(toRaw(clip));
       }
     }
   }
 
   function getModelsFromDb() {
-    clear()
-    
+    clear();
+
     /** @type {import("../../models/clip").Model[]} */
-    const tmp = []
+    const tmp = [];
 
     db.getAll(
       /**
@@ -121,13 +120,13 @@ export const useClipboardStore = defineStore('clips', () => {
       (model) => tmp.push(model),
       () => modelCollection.value = tmp.toSorted(
         /**
-         * @param {import("../../models/clip").Model} a 
-         * @param {import("../../models/clip").Model} b 
+         * @param {import("../../models/clip").Model} a
+         * @param {import("../../models/clip").Model} b
          * @returns {number}
          */
-        (a, b) => b.created - a.created
-      )
-    )
+        (a, b) => b.created - a.created,
+      ),
+    );
   }
 
   /**
@@ -135,7 +134,7 @@ export const useClipboardStore = defineStore('clips', () => {
    */
   function peekTop() {
     if (modelCollection.value.length > 0) {
-      return modelCollection.value[0]
+      return modelCollection.value[0];
     }
   }
 
@@ -152,6 +151,6 @@ export const useClipboardStore = defineStore('clips', () => {
     clear,
     toggleStarred,
     getModelsFromDb,
-    peekTop
-  }
+    peekTop,
+  };
 });

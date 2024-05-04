@@ -3,18 +3,18 @@ import { ref, onMounted } from 'vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
 import { keyboard, bindKey } from '../keyshortcuts';
 
-const clipboardStore = useClipboardStore()
-const searchInput = ref(null)
+const clipboardStore = useClipboardStore();
+const searchInput = ref(null);
 
 const focus = () => {
-    if (searchInput.value) {
-        searchInput.value.focus()
-    }
-}
+  if (searchInput.value) {
+    searchInput.value.focus();
+  }
+};
 
 onMounted(() => {
-    bindKey(keyboard.search, focus)
-})
+  bindKey(keyboard.search, focus);
+});
 </script>
 
 <template>

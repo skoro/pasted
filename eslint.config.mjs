@@ -15,4 +15,16 @@ export default [
   {languageOptions: { globals: {...globals.browser, ...globals.node} }},
   ...compat.extends("airbnb-base"),
   ...pluginVue.configs["flat/essential"],
+  {
+    // parserPath: path.join(__dirname, 'src'),
+    // parserOptions: {
+      // emcaVersion: 'latest',
+    // },
+    rules: {
+      'import/prefer-default-export': 'off',
+      'import/no-extraneous-dependencies': ["error", {"devDependencies": true}],
+      'no-alert': 'off',
+      'no-restricted-globals': ['off', 'confirm'],
+    },
+  }
 ];

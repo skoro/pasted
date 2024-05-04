@@ -1,16 +1,16 @@
 <script setup>
-import ToolButton from './forms/ToolButton.vue'
-import IconBack from './icons/IconBack.vue'
-import IconCopy from './icons/IconCopy.vue'
-import IconTrash from './icons/IconTrash.vue'
-import IconSearch from './icons/IconSearch.vue'
+import ToolButton from './forms/ToolButton.vue';
+import IconBack from './icons/IconBack.vue';
+import IconCopy from './icons/IconCopy.vue';
+import IconTrash from './icons/IconTrash.vue';
+import IconSearch from './icons/IconSearch.vue';
 
 defineEmits([
-    'switch-view',
-    'copy-item',
-    'remove-item',
-    'peek-item',
-])
+  'switch-view',
+  'copy-item',
+  'remove-item',
+  'peek-item',
+]);
 </script>
 
 <template>

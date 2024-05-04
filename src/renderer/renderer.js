@@ -34,7 +34,7 @@ import App from './components/App.vue';
 import { useClipboardStore } from './stores/useClipboardStore';
 import { pluginTrimStrings } from './plugins/plugin-trim-strings';
 import { pluginLocalStoragePrefs, loadPrefs } from './plugins/plugin-localstorage-prefs';
-import db from './stores/db'
+import db from './stores/db';
 
 const app = createApp(App);
 const pinia = createPinia();

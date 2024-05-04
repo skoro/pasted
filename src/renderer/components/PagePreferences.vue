@@ -1,25 +1,25 @@
 <script setup>
-import HeaderBar from './HeaderBar.vue'
-import IconCross from './icons/IconCross.vue'
-import KeyboardShortcut from './KeyboardShortcut.vue'
-import ToolButton from './forms/ToolButton.vue'
-import FormCheckbox from './forms/Checkbox.vue'
-import { usePreferencesStore } from '../stores/usePreferencesStore'
-import { keyboard, bindEscKey } from '../keyshortcuts'
-import { onMounted } from 'vue'
-import { version } from '../../../package.json'
+import { onMounted } from 'vue';
+import HeaderBar from './HeaderBar.vue';
+import IconCross from './icons/IconCross.vue';
+import KeyboardShortcut from './KeyboardShortcut.vue';
+import ToolButton from './forms/ToolButton.vue';
+import FormCheckbox from './forms/Checkbox.vue';
+import { usePreferencesStore } from '../stores/usePreferencesStore';
+import { keyboard, bindEscKey } from '../keyshortcuts';
+import { version } from '../../../package.json';
 
-const emit = defineEmits(['close-page'])
+const emit = defineEmits(['close-page']);
 
-const prefs = usePreferencesStore()
-
-onMounted(() => {
-    bindEscKey(closePage)
-})
+const prefs = usePreferencesStore();
 
 function closePage() {
-    emit('close-page')
+  emit('close-page');
 }
+
+onMounted(() => {
+  bindEscKey(closePage);
+});
 </script>
 
 <template>

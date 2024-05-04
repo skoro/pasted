@@ -1,20 +1,20 @@
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
-    label: {
-        type: String,
-        required: true,
-    },
-    help: {
-        type: String,
-        required: false,
-    }
-})
+  label: {
+    type: String,
+    required: true,
+  },
+  help: {
+    type: String,
+    required: false,
+  },
+});
 
-const model = defineModel()
+const model = defineModel();
 
-const hasHelp = computed(() => props.help.length > 0)
+const hasHelp = computed(() => props.help.length > 0);
 </script>
 
 <template>
