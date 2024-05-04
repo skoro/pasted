@@ -20,6 +20,9 @@ const createMainWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    // initially the window is hidden, if renderer submits 'will-show-window' event
+    // the window shows, see below.
+    show: false,
   });
 
   // and load the index.html of the app.
@@ -46,6 +49,8 @@ const createMainWindow = () => {
   });
 
   ipcMain.on('clip:select', (event, data) => clipboardEventEmitter.copy(data));
+  // fires at start, see renderer onload.
+  ipcMain.on('will-show-window', (event) => mainWindow.show());
 
   return mainWindow;
 };

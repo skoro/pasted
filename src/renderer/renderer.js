@@ -48,6 +48,17 @@ app.mount('#app');
 const clipboardStore = useClipboardStore();
 
 db.open(clipboardStore.getModelsFromDb);
-loadPrefs();
+const prefs = loadPrefs();
 
-window.electronAPI.onClipboardNew(clipboardStore.put);
+const electronAPI = window.electronAPI;
+
+electronAPI.onClipboardNew(clipboardStore.put);
+
+// App preferences are in local storage, after loading the dom
+// notify the main process whether the window should be displayed.
+window.onload = () => {
+    const isMinimized = prefs?.startMinimized ?? false;
+    if (!isMinimized) {
+        electronAPI.willShowWindow();
+    }
+};
