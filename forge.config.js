@@ -29,7 +29,10 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        name: 'Pasted',
+        setupIcon: 'resources/icon.ico'
+      },
     },
     // {
     //   name: '@electron-forge/maker-zip',
