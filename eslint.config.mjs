@@ -16,10 +16,6 @@ export default [
   ...compat.extends("airbnb-base"),
   ...pluginVue.configs["flat/essential"],
   {
-    // parserPath: path.join(__dirname, 'src'),
-    // parserOptions: {
-      // emcaVersion: 'latest',
-    // },
     rules: {
       'import/prefer-default-export': 'off',
       'import/no-extraneous-dependencies': ["error", {"devDependencies": true}],
