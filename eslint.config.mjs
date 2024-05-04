@@ -18,9 +18,18 @@ export default [
   {
     rules: {
       'import/prefer-default-export': 'off',
+      'import/no-named-as-default': 'off',
+      'import/no-named-as-default-member': 'off',
       'import/no-extraneous-dependencies': ["error", {"devDependencies": true}],
       'no-alert': 'off',
       'no-restricted-globals': ['off', 'confirm'],
+      'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
     },
+  },
+  {
+    ignores: ['src/components/icons/*.vue'],
+    rules: {
+      'max-len': 'off'
+    }
   }
 ];

@@ -118,24 +118,27 @@ export const useClipboardStore = defineStore('clips', () => {
        * @param {import("../../models/clip").Model} model
        */
       (model) => tmp.push(model),
-      () => modelCollection.value = tmp.toSorted(
+      () => {
+        modelCollection.value = tmp.toSorted(
         /**
          * @param {import("../../models/clip").Model} a
          * @param {import("../../models/clip").Model} b
          * @returns {number}
          */
-        (a, b) => b.created - a.created,
-      ),
+          (a, b) => b.created - a.created,
+        );
+      },
     );
   }
 
   /**
-   * @returns {?import("../../models/clip").Model}
+   * @returns {?import("../../models/clip").Model|null}
    */
   function peekTop() {
     if (modelCollection.value.length > 0) {
       return modelCollection.value[0];
     }
+    return null;
   }
 
   return {
