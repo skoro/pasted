@@ -41,6 +41,13 @@ function closePage() {
                 help="A string with whitespaces only won't be put to clipboard."
             ></FormCheckbox>
 
+            <FormCheckbox
+                class="mb-4"
+                v-model="prefs.startMinimized"
+                label="Start minimized"
+                help="Application will start minimized into the system tray."
+            ></FormCheckbox>
+
             <div class="text-sm text-slate-400 space-y-3 pt-4">
                 <KeyboardShortcut label="Copy nth item" keys="1..9"/>
                 <KeyboardShortcut label="Peek nth item" keys="alt+1..9"/>
