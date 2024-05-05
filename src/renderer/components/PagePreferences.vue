@@ -32,17 +32,17 @@ function closePage() {
             </ToolButton>
         </HeaderBar>
 
-        <div class="my-11 p-4 divide-y divide-neutral-200">
+        <div class="my-11 px-4 divide-y divide-neutral-200">
 
             <FormCheckbox
-                class="mb-4"
+                class="py-2"
                 v-model="prefs.ignoreEmptyStrings"
                 label="Ignore empty strings"
                 help="A string with whitespaces only won't be put to clipboard."
             ></FormCheckbox>
 
             <FormCheckbox
-                class="mb-4"
+                class="py-2"
                 v-model="prefs.startMinimized"
                 label="Start minimized"
                 help="Application will start minimized into the system tray."
