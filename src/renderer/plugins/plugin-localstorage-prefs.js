@@ -21,10 +21,10 @@ export function pluginLocalStoragePrefs({ store }) {
 export function loadPrefs() {
   const prefs = usePreferencesStore();
 
-  const data = JSON.parse(localStorage.getItem(prefs.$id));
-  if (data !== null) {
-    prefs.init(data);
-  }
+    const data = JSON.parse(localStorage.getItem(prefs.$id))
+    if (data !== null) {
+        prefs.init(data)
+    }
 
-  return data;
+    return data;
 }
