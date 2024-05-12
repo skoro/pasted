@@ -15,4 +15,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   removeClipModel: (clipModelId) => ipcRenderer.send('clip:remove', clipModelId),
   selectClipModel: (clipModel) => ipcRenderer.send('clip:select', clipModel),
   clearList: () => ipcRenderer.send('clear:list'),
+  willShowWindow: () => ipcRenderer.send('will-show-window'),
 });

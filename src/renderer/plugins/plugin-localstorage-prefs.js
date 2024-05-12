@@ -8,6 +8,16 @@ export function pluginLocalStoragePrefs({ store }) {
   }
 }
 
+/**
+ * @typedef {object} Preferences
+ * @property {?boolean} trimStrings
+ * @property {?boolean} ignoreEmptyStrings
+ * @property {?boolean} startMinimized
+ */
+
+/**
+ * @returns {Preferences}
+ */
 export function loadPrefs() {
   const prefs = usePreferencesStore();
 
@@ -15,4 +25,6 @@ export function loadPrefs() {
   if (data !== null) {
     prefs.init(data);
   }
+
+  return data;
 }

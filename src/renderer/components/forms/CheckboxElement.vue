@@ -12,7 +12,8 @@ const props = defineProps({
   },
 });
 
-const model = defineModel();
+const model = defineModel()
+const elemId = 'pref-' + window.crypto.randomUUID();
 
 const hasHelp = computed(() => props.help.length > 0);
 </script>
@@ -20,10 +21,10 @@ const hasHelp = computed(() => props.help.length > 0);
 <template>
     <div class="flex">
         <div class="flex items-center h-5">
-            <input id="opt-1" type="checkbox" class="w-4 h-4" v-model="model" />
+            <input :id="elemId" type="checkbox" class="w-4 h-4" v-model="model" />
         </div>
         <div class="ms-2 text-sm">
-            <label for="opt-1" class="text-sm font-medium text-gray-900">{{ label }}</label>
+            <label :for="elemId" class="text-sm font-medium text-gray-900">{{ label }}</label>
             <p v-if="hasHelp" class="text-xs font-normal text-gray-500">{{ help }}</p>
         </div>
     </div>
