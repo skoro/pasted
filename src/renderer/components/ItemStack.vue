@@ -1,10 +1,10 @@
 <script setup>
-    import HeaderActions from './HeaderActions.vue';
-    import ClipboardItem from './ClipboardItem.vue';
-    import FooterActions from './FooterActions.vue';
-    import { useClipboardStore } from '../stores/useClipboardStore'
+import HeaderActions from './HeaderActions.vue';
+import ClipboardItem from './ClipboardItem.vue';
+import FooterActions from './FooterActions.vue';
+import { useClipboardStore } from '../stores/useClipboardStore';
 
-    const clipboard = useClipboardStore()
+const clipboard = useClipboardStore();
 </script>
 <template>
     <div class="relative">

@@ -1,25 +1,25 @@
 <script setup>
-import HeaderBar from './HeaderBar.vue'
-import IconCross from './icons/IconCross.vue'
-import KeyboardShortcut from './KeyboardShortcut.vue'
-import ToolButton from './forms/ToolButton.vue'
-import FormCheckbox from './forms/Checkbox.vue'
-import { usePreferencesStore } from '../stores/usePreferencesStore'
-import { keyboard, bindEscKey } from '../keyshortcuts'
-import { onMounted } from 'vue'
-import { version } from '../../../package.json'
+import { onMounted } from 'vue';
+import HeaderBar from './HeaderBar.vue';
+import IconCross from './icons/IconCross.vue';
+import KeyboardShortcut from './KeyboardShortcut.vue';
+import ToolButton from './forms/ToolButton.vue';
+import CheckboxElem from './forms/CheckboxElement.vue';
+import { usePreferencesStore } from '../stores/usePreferencesStore';
+import { keyboard, bindEscKey } from '../keyshortcuts';
+import { version } from '../../../package.json';
 
-const emit = defineEmits(['close-page'])
+const emit = defineEmits(['close-page']);
 
-const prefs = usePreferencesStore()
-
-onMounted(() => {
-    bindEscKey(closePage)
-})
+const prefs = usePreferencesStore();
 
 function closePage() {
-    emit('close-page')
+  emit('close-page');
 }
+
+onMounted(() => {
+  bindEscKey(closePage);
+});
 </script>
 
 <template>
@@ -34,12 +34,12 @@ function closePage() {
 
         <div class="my-11 p-4 divide-y divide-neutral-200">
 
-            <FormCheckbox
+            <CheckboxElem
                 class="mb-4"
                 v-model="prefs.ignoreEmptyStrings"
                 label="Ignore empty strings"
                 help="A string with whitespaces only won't be put to clipboard."
-            ></FormCheckbox>
+            ></CheckboxElem>
 
             <div class="text-sm text-slate-400 space-y-3 pt-4">
                 <KeyboardShortcut label="Copy nth item" keys="1..9"/>

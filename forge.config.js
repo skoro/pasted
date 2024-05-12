@@ -1,14 +1,14 @@
-const path = require("node:path")
-const fs = require("node:fs")
+const path = require('node:path');
+const fs = require('node:fs');
 
 function removeLocales(localesPath) {
   try {
     const files = fs.readdirSync(localesPath);
     files
-      .filter((file) => file.endsWith(".pak"))
-      .forEach((file) => fs.rmSync(path.join(localesPath, file)))
+      .filter((file) => file.endsWith('.pak'))
+      .forEach((file) => fs.rmSync(path.join(localesPath, file)));
   } catch (err) {
-    console.error(`remove locales error: ${err}`)
+    console.error(`remove locales error: ${err}`);
   }
 }
 
@@ -19,10 +19,10 @@ module.exports = {
     afterCopy: [
       (buildPath, electronVersion, platform, arch, callback) => {
         // Remove unnecessary locales to reduce installation file.
-        const localesPath = path.resolve(buildPath, '..', '..', 'locales')
-        removeLocales(localesPath)
-        callback()
-      }
+        const localesPath = path.resolve(buildPath, '..', '..', 'locales');
+        removeLocales(localesPath);
+        callback();
+      },
     ],
   },
   rebuildConfig: {},

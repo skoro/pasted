@@ -1,14 +1,14 @@
 <script setup>
 defineProps({
-    label: {
-        type: String,
-        required: true,
-    },
-    keys: {
-        type: String,
-        required: true,
-    }
-})
+  label: {
+    type: String,
+    required: true,
+  },
+  keys: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>

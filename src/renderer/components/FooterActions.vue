@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 import ToolButton from './forms/ToolButton.vue';
 import IconTrash from './icons/IconTrash.vue';
 import IconStarOutline from './icons/IconStarOutline.vue';
@@ -9,58 +10,59 @@ import IconImageSolid from './icons/IconImageSolid.vue';
 import IconPreferences from './icons/IconPreferences.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
 import { keyboard, bindKey } from '../keyshortcuts';
-import { storeToRefs } from 'pinia';
 
-const emit = defineEmits(['open-prefs'])
+const emit = defineEmits(['open-prefs']);
 
-const clipboardStore = useClipboardStore()
-const { onlyStarred, withImages } = storeToRefs(clipboardStore)
+const clipboardStore = useClipboardStore();
+const { onlyStarred, withImages } = storeToRefs(clipboardStore);
 
-const hasClips = computed(() => clipboardStore.clips.length > 0)
-const hasImages = computed(() => clipboardStore.images.length > 0)
-
-onMounted(() => {
-    bindKey(keyboard.toggleStarred, () => onlyStarred.value = !onlyStarred.value)
-    bindKey(keyboard.toggleImages, () => withImages.value = hasImages.value ? !withImages.value : false)
-    bindKey(keyboard.removeItems, clear)
-    bindKey(keyboard.openPrefs, () => emit('open-prefs'))
-})
+const hasClips = computed(() => clipboardStore.clips.length > 0);
+const hasImages = computed(() => clipboardStore.images.length > 0);
 
 function clear() {
-    if (!hasClips.value) {
-        return false
+  if (!hasClips.value) {
+    return false;
+  }
+
+  let msg;
+  let clearCallback;
+
+  if (onlyStarred.value && withImages.value) {
+    msg = 'Are you sure you want to remove starred images ?';
+    clearCallback = (item) => item.starred && item.image;
+  } else if (onlyStarred.value) {
+    msg = 'Are you sure you want to remove starred items ?';
+    clearCallback = (item) => item.starred;
+  } else if (withImages.value) {
+    msg = 'Are you sure you want to remove images ?';
+    clearCallback = (item) => item.image && !item.starred;
+  } else {
+    msg = 'Are you sure you want to remove items ?';
+    clearCallback = (item) => !item.starred;
+  }
+
+  if (confirm(msg)) {
+    clipboardStore.clear(clearCallback);
+    window.electronAPI.clearList();
+    if (onlyStarred.value && !hasClips.value) {
+      onlyStarred.value = false;
     }
-
-    let msg
-    let clearCallback
-
-    if (onlyStarred.value && withImages.value) {
-        msg = 'Are you sure you want to remove starred images ?'
-        clearCallback = (item) => item.starred && item.image
-    } else if (onlyStarred.value) {
-        msg = 'Are you sure you want to remove starred items ?'
-        clearCallback = (item) => item.starred
-    } else if (withImages.value) {
-        msg = 'Are you sure you want to remove images ?'
-        clearCallback = (item) => item.image && !item.starred
-    } else {
-        msg = 'Are you sure you want to remove items ?'
-        clearCallback = (item) => !item.starred
+    if (withImages.value && !hasImages.value) {
+      withImages.value = false;
     }
+  }
 
-    if (confirm(msg)) {
-        clipboardStore.clear(clearCallback)
-        window.electronAPI.clearList()
-        if (onlyStarred.value && !hasClips.value) {
-            onlyStarred.value = false
-        }
-        if (withImages.value && !hasImages.value) {
-            withImages.value = false
-        }
-    }
-
-    return false
+  return false;
 }
+
+onMounted(() => {
+  bindKey(keyboard.toggleStarred, () => { onlyStarred.value = !onlyStarred.value; });
+  bindKey(keyboard.toggleImages, () => {
+    withImages.value = hasImages.value ? !withImages.value : false;
+  });
+  bindKey(keyboard.removeItems, clear);
+  bindKey(keyboard.openPrefs, () => emit('open-prefs'));
+});
 </script>
 
 <template>

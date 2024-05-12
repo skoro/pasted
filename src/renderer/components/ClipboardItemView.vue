@@ -1,45 +1,45 @@
 <script setup>
-import { computed, onUpdated, onMounted } from 'vue'
-import { bindKey } from '../keyshortcuts'
-import ToolButton from './forms/ToolButton.vue'
-import IconDotsHorizontal from './icons/IconDotsHorizontal.vue'
-import IconStarOutline from './icons/IconStarOutline.vue'
-import IconStarSolid from './icons/IconStarSolid.vue'
+import { computed, onUpdated, onMounted } from 'vue';
+import { bindKey } from '../keyshortcuts';
+import ToolButton from './forms/ToolButton.vue';
+import IconDotsHorizontal from './icons/IconDotsHorizontal.vue';
+import IconStarOutline from './icons/IconStarOutline.vue';
+import IconStarSolid from './icons/IconStarSolid.vue';
 
 const emit = defineEmits([
-    'switch-view',
-    'toggle-starred',
-    'copy-item',
-    'remove-item',
-    'peek-item',
-])
+  'switch-view',
+  'toggle-starred',
+  'copy-item',
+  'remove-item',
+  'peek-item',
+]);
 
 const props = defineProps({
-    clip: {
-        type: Object,
-        required: true,
-    },
-    index: {
-        type: Number,
-        default: 0,
-    },
-})
+  clip: {
+    type: Object,
+    required: true,
+  },
+  index: {
+    type: Number,
+    default: 0,
+  },
+});
 
-const isShortcutIndex = computed(() => props.index > 0 && props.index < 10)
-const lines = computed(() => props.clip.data.substring(0, 199).trimStart().split("\n"))
-const isImage = computed(() => props.clip.image)
-
-onMounted(bindShortcut)
-onUpdated(bindShortcut)
+const isShortcutIndex = computed(() => props.index > 0 && props.index < 10);
+const lines = computed(() => props.clip.data.substring(0, 199).trimStart().split('\n'));
+const isImage = computed(() => props.clip.image);
 
 function copyItem() {
-    emit('copy-item')
+  emit('copy-item');
 }
 
 function bindShortcut() {
-    bindKey(`${props.index}`, copyItem)
-    bindKey(`alt+${props.index}`, () => emit('peek-item', props.clip))
+  bindKey(`${props.index}`, copyItem);
+  bindKey(`alt+${props.index}`, () => emit('peek-item', props.clip));
 }
+
+onMounted(bindShortcut);
+onUpdated(bindShortcut);
 </script>
 
 <template>
