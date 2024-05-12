@@ -5,6 +5,7 @@ import {
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 import { keyboard } from '../renderer/keyshortcuts';
+import { setStartAppAtLogin, isPlatformLinux, isPlatformDarwin } from './system';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
@@ -58,6 +59,7 @@ const createMainWindow = () => {
   ipcMain.on('clip:select', (event, data) => clipboardEventEmitter.copy(data));
   // fires at start, see renderer onload.
   ipcMain.on('will-show-window', (event) => mainWindow.show());
+  ipcMain.on('pref:startAtLogin', (event, value) => setStartAppAtLogin(value));
 
   return mainWindow;
 };
@@ -84,7 +86,7 @@ const createTrayIcon = (mainWindow) => {
 
   // Gnome tray does not support actions by icon clicking.
   // There is a menu item does the same as clicking on the icon to show/hide the main window.
-  if (process.platform === 'linux') {
+  if (isPlatformLinux) {
     contextMenu.insert(0, new MenuItem({
       label: 'Show/Hide',
       click: () => showHideCallback(),
@@ -129,7 +131,7 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (!isPlatformDarwin()) {
     app.quit();
   }
 });
