@@ -22,6 +22,8 @@ export const useClipboardStore = defineStore('clips', () => {
 
   const images = computed(() => modelCollection.value
     .filter((i) => i.image));
+  const starred = computed(() => modelCollection.value
+    .filter((i) => i.starred));
 
   // actions
 
@@ -148,6 +150,7 @@ export const useClipboardStore = defineStore('clips', () => {
     onlyStarred,
     withImages,
     filter,
+    starred,
     // actions
     put,
     remove,
