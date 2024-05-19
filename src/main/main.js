@@ -122,9 +122,23 @@ const registerGlobalShortcut = (mainWindow) => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  const isSingleInstance = app.requestSingleInstanceLock();
+
+  if (!isSingleInstance) {
+    // will emit 'second-instance' - show and focus main window of running app instance.
+    app.quit();
+    return;
+  }
+
   const mainWindow = createMainWindow();
+
   createTrayIcon(mainWindow);
   registerGlobalShortcut(mainWindow);
+
+  app.on('second-instance', () => {
+    mainWindow.show();
+    mainWindow.focus();
+  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
