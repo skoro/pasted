@@ -18,6 +18,7 @@ const { onlyStarred, withImages } = storeToRefs(clipboardStore);
 
 const hasClips = computed(() => clipboardStore.clips.length > 0);
 const hasImages = computed(() => clipboardStore.images.length > 0);
+const hasStarred = computed(() => clipboardStore.starred.length > 0);
 
 function clear() {
   if (!hasClips.value) {
@@ -68,7 +69,7 @@ onMounted(() => {
 <template>
     <div
         class="fixed flex flex-row bottom-0 left-0 h-11 w-full bg-gray-200 space-x-4 justify-center items-center text-gray-600">
-        <ToolButton class="w-8 h-8" @click="onlyStarred = !onlyStarred">
+        <ToolButton class="w-8 h-8" v-if="hasStarred" @click="onlyStarred = !onlyStarred">
             <IconStarSolid v-if="onlyStarred" />
             <IconStarOutline v-else />
         </ToolButton>
