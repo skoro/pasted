@@ -15,16 +15,16 @@ defineEmits([
 
 <template>
     <div class="flex flex-row space-x-3 text-slate-600">
-        <ToolButton class="h-8 w-8" @click="$emit('switch-view', 'view')">
+        <ToolButton class="h-8 w-8" @click="$emit('switch-view', 'view')" tooltip="Back">
             <IconBack />
         </ToolButton>
-        <ToolButton class="h-8 w-8" @click="$emit('copy-item')">
+        <ToolButton class="h-8 w-8" @click="$emit('copy-item')" tooltip="Copy">
             <IconCopy />
         </ToolButton>
-        <ToolButton class="h-8 w-8" @click="$emit('peek-item')">
+        <ToolButton class="h-8 w-8" @click="$emit('peek-item')" tooltip="Peek">
             <IconSearch />
         </ToolButton>
-        <ToolButton class="h-8 w-8" @click="$emit('remove-item')">
+        <ToolButton class="h-8 w-8" @click="$emit('remove-item')" tooltip="Delete">
             <IconTrash />
         </ToolButton>
     </div>
