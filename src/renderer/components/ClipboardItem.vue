@@ -1,68 +1,70 @@
 <script setup>
+import { ref, shallowRef, toRaw } from 'vue';
 import ClipboardItemView from './ClipboardItemView.vue';
 import ClipboardItemMenu from './ClipboardItemMenu.vue';
 import { useClipboardStore } from '../stores/useClipboardStore';
-import { ref, shallowRef, toRaw } from 'vue';
 
 const props = defineProps({
-    clip: {
-        type: Object,
-        required: true,
-    },
-    index: {
-        type: Number,
-        default: 0,
-    }
-})
+  clip: {
+    type: Object,
+    required: true,
+  },
+  index: {
+    type: Number,
+    default: 0,
+  },
+});
 
-const emit = defineEmits(['peek-item'])
+const emit = defineEmits(['peek-item']);
 
-const isCopied = ref(false)
-const clipboardStore = useClipboardStore()
-const context = shallowRef(ClipboardItemView)
+const isCopied = ref(false);
+const clipboardStore = useClipboardStore();
+const context = shallowRef(ClipboardItemView);
 
 function setViewContext() {
-    if (context.value !== ClipboardItemView) {
-        context.value = ClipboardItemView
-    }
+  if (context.value !== ClipboardItemView) {
+    context.value = ClipboardItemView;
+  }
 }
 
 function onSwitchContext(view) {
-    switch (view) {
-        case 'view':
-            setViewContext()
-            break;
-        case 'menu':
-            context.value = ClipboardItemMenu
-            break;
-    }
+  switch (view) {
+    case 'view':
+      setViewContext();
+      break;
+    case 'menu':
+      context.value = ClipboardItemMenu;
+      break;
+    default:
+  }
 }
 
 function onCopyItem() {
-    isCopied.value = true
-    setTimeout(() => isCopied.value = false, 800)
-    window.electronAPI.selectClipModel(toRaw(props.clip))
-    setViewContext()
+  isCopied.value = true;
+  setTimeout(() => {
+    isCopied.value = false;
+  }, 800);
+  window.electronAPI.selectClipModel(toRaw(props.clip));
+  setViewContext();
 }
 
 function onToggleStarred() {
-    clipboardStore.toggleStarred(props.clip.id)
-    setViewContext()
+  clipboardStore.toggleStarred(props.clip.id);
+  setViewContext();
 }
 
 function onRemoveItem() {
-    if (!props.clip.starred
-        || (props.clip.starred && confirm('Are you sure you want to remove ?')))
-    {
-        clipboardStore.remove(props.clip.id)
-        // FIXME: there should be original object, vue proxied object cannot be cloned by ipc
-        window.electronAPI.removeClipModel(props.clip.id)
-    }
+  if (!props.clip.starred
+        || (props.clip.starred && confirm('Are you sure you want to remove ?'))) {
+    clipboardStore.remove(props.clip.id);
+    // FIXME: there should be original object, vue proxied object cannot be cloned by ipc
+    window.electronAPI.removeClipModel(props.clip.id);
+  }
 }
 
 function onPeekItem() {
-    emit('peek-item')
-    setViewContext()
+  emit('peek-item');
+  setViewContext();
 }
 </script>
 

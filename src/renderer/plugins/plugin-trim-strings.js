@@ -1,64 +1,66 @@
-import { toRaw } from "vue"
-import { usePreferencesStore } from "../stores/usePreferencesStore"
-import { useClipboardStore } from "../stores/useClipboardStore"
-import Clip from "../../models/clip"
+/* eslint-disable import/no-extraneous-dependencies */
+import { toRaw } from 'vue';
+import { usePreferencesStore } from '../stores/usePreferencesStore';
+import { useClipboardStore } from '../stores/useClipboardStore';
+import Clip from '../../models/clip';
 
-const electron = window.electronAPI
+const electron = window.electronAPI;
 
 /**
  * @param {import("../../models/clip").Model} model
  */
 function trimStrings(model) {
-    const trimmed = Clip.factory(model.data.trim())
-    if (Clip.equals(trimmed, model)) {
-        return
-    }
+  const trimmed = Clip.factory(model.data.trim());
+  if (Clip.equals(trimmed, model)) {
+    return;
+  }
 
-    model.data = trimmed.data
+  // eslint-disable-next-line no-param-reassign
+  model.data = trimmed.data;
 
-    electron.removeClipModel(model.id)
-    electron.selectClipModel(model)
+  electron.removeClipModel(model.id);
+  electron.selectClipModel(model);
 }
 
 /**
  * @param {import("../../models/clip").Model} model
- * 
+ *
  * @throws {Error} A string is empty.
  */
 function ignoreEmptyStrings(model) {
-    if (!model.image && model.data.trim().length === 0) {
-        electron.removeClipModel(model.id)
+  if (!model.image && model.data.trim().length === 0) {
+    electron.removeClipModel(model.id);
 
-        const clipboardStore = useClipboardStore()
-        const top = clipboardStore.peekTop()
+    const clipboardStore = useClipboardStore();
+    const top = clipboardStore.peekTop();
 
-        if (top) {
-            electron.selectClipModel(toRaw(top))
-        }
-
-        throw new Error('plugin info: ignore empty string')
+    if (top) {
+      electron.selectClipModel(toRaw(top));
     }
+
+    throw new Error('plugin info: ignore empty string');
+  }
 }
 
 export function pluginTrimStrings({ store }) {
-    const prefs = usePreferencesStore()
+  const prefs = usePreferencesStore();
 
-    store.$onAction(({ name, store, args }) => {
-        if (store.$id === 'clips' && name === 'put') {
-            /** @type {import("../../models/clip").Model} */
-            const model = args[0]
+  store.$onAction(({ name, store, args }) => {
+    if (store.$id === 'clips' && name === 'put') {
+      /** @type {import("../../models/clip").Model} */
+      const model = args[0];
 
-            if (model.image) {
-                return
-            }
+      if (model.image) {
+        return;
+      }
 
-            if (prefs.trimStrings) {
-                trimStrings(model)
-            }
-            
-            if (prefs.ignoreEmptyStrings) {
-                ignoreEmptyStrings(model)
-            }
-        }
-    })
+      if (prefs.trimStrings) {
+        trimStrings(model);
+      }
+
+      if (prefs.ignoreEmptyStrings) {
+        ignoreEmptyStrings(model);
+      }
+    }
+  });
 }
