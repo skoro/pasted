@@ -22,6 +22,28 @@ export const useClipboardStore = defineStore('clips', () => {
 
   const images = computed(() => modelCollection.value
     .filter((i) => i.image));
+  const starred = computed(() => modelCollection.value
+    .filter((i) => i.starred));
+
+  // private
+
+  /**
+   * Resets onlyStarred filter if starred collection is empty.
+   */
+  function updateOnlyStarred() {
+    if (onlyStarred.value) {
+      onlyStarred.value = starred.value.length > 0;
+    }
+  }
+
+  /**
+   * Resets withImages filter if images collection is empty.
+   */
+  function updateWithImages() {
+    if (withImages.value) {
+      withImages.value = images.value.length > 0;
+    }
+  }
 
   // actions
 
@@ -53,6 +75,8 @@ export const useClipboardStore = defineStore('clips', () => {
         const model = modelCollection.value[i];
         db.remove(model.id);
         modelCollection.value.splice(i, 1);
+        updateOnlyStarred();
+        updateWithImages();
         return model;
       }
     }
@@ -103,6 +127,8 @@ export const useClipboardStore = defineStore('clips', () => {
       if (clip.id === clipId) {
         clip.starred = !clip.starred;
         db.update(toRaw(clip));
+        updateOnlyStarred();
+        break;
       }
     }
   }
@@ -148,6 +174,7 @@ export const useClipboardStore = defineStore('clips', () => {
     onlyStarred,
     withImages,
     filter,
+    starred,
     // actions
     put,
     remove,
