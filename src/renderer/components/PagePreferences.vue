@@ -32,7 +32,7 @@ onMounted(() => {
             </ToolButton>
         </HeaderBar>
 
-        <div class="my-11 p-4 divide-y divide-neutral-200">
+        <div class="my-11 px-4 divide-y divide-neutral-200">
 
             <CheckboxElem
                 class="mb-4"
@@ -58,4 +58,4 @@ onMounted(() => {
             </div>
         </div>
     </div>
-</template>./forms/ToolButton.vue
+</template>
