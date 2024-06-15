@@ -1,5 +1,6 @@
 {
-  "name": "pasted",
+  "private": true,
+  "name": "Pasted",
   "productName": "Pasted",
   "version": "0.3.0",
   "description": "Yet another clipboard manager",
@@ -52,5 +53,8 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0"
+  },
+  "config": {
+    "forge": "./forge.config.js"
   }
 }
