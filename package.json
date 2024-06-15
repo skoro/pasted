@@ -2,7 +2,7 @@
   "private": true,
   "name": "Pasted",
   "productName": "Pasted",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Yet another clipboard manager",
   "main": ".vite/build/main.js",
   "scripts": {
