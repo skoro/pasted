@@ -8,12 +8,14 @@ function removeLocales(localesPath) {
       .filter((file) => file.endsWith('.pak'))
       .forEach((file) => fs.rmSync(path.join(localesPath, file)));
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(`remove locales error: ${err}`);
   }
 }
 
 module.exports = {
   packagerConfig: {
+    name: 'Pasted',
     asar: true,
     icon: './resources/icon',
     afterCopy: [
@@ -31,7 +33,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         name: 'Pasted',
-        setupIcon: 'resources/icon.ico'
+        setupIcon: 'resources/icon.ico',
       },
     },
     // {
@@ -44,7 +46,7 @@ module.exports = {
         options: {
           name: 'pasted',
           productName: 'Pasted',
-          icon: './resources/icon.png'
+          icon: './resources/icon.png',
         },
       },
     },
