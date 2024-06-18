@@ -46,7 +46,7 @@ onUpdated(bindShortcut);
     <div class="flex-1 overflow-hidden">
         <a href="#" @click.prevent="copyItem">
             <img class="object-scale-down h-20" v-if="isImage" :src="clip.data"/>
-            <ul v-if="!isImage" v-for="(line, index) in lines" :key="index">
+            <ul v-else v-for="(line, index) in lines" :key="index">
                 <li class="text-gray-800">{{ line }}</li>
             </ul>
         </a>
