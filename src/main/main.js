@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
-  app, BrowserWindow, ipcMain, Tray, nativeImage, Menu, MenuItem, globalShortcut,
+  app, BrowserWindow, ipcMain, Tray, nativeImage, Menu, MenuItem, globalShortcut, shell,
 } from 'electron';
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
@@ -60,6 +60,7 @@ const createMainWindow = () => {
   // fires at start, see renderer onload.
   ipcMain.on('will-show-window', (event) => mainWindow.show());
   ipcMain.on('pref:startAtLogin', (event, value) => setStartAppAtLogin(value));
+  ipcMain.on('open:url', (_, url) => shell.openExternal(url));
 
   return mainWindow;
 };

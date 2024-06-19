@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onUpdated, onMounted } from 'vue';
 import { bindKey } from '../keyshortcuts';
+import Clip from '../../models/clip';
 import ToolButton from './forms/ToolButton.vue';
 import IconDotsHorizontal from './icons/IconDotsHorizontal.vue';
 import IconStarOutline from './icons/IconStarOutline.vue';
@@ -12,6 +13,7 @@ const emit = defineEmits([
   'copy-item',
   'remove-item',
   'peek-item',
+  'open-url',
 ]);
 
 const props = defineProps({
@@ -29,8 +31,15 @@ const isShortcutIndex = computed(() => props.index > 0 && props.index < 10);
 const lines = computed(() => props.clip.data.substring(0, 199).trimStart().split('\n'));
 const isImage = computed(() => props.clip.image);
 
-function copyItem() {
-  emit('copy-item');
+/**
+ * @param {PointerEvent} event
+ */
+function copyItem(event) {
+  if (event.ctrlKey && Clip.isUrl(props.clip)) {
+    emit('open-url');
+  } else {
+    emit('copy-item');
+  }
 }
 
 function bindShortcut() {
