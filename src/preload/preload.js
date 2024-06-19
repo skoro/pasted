@@ -17,4 +17,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   clearList: () => ipcRenderer.send('clear:list'),
   willShowWindow: () => ipcRenderer.send('will-show-window'),
   changeStartAtLogin: (value) => ipcRenderer.send('pref:startAtLogin', value),
+  openUrl: (value) => ipcRenderer.send('open:url', value),
 });
