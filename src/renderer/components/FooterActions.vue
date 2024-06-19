@@ -77,7 +77,7 @@ onMounted(() => {
             <IconImageSolid v-if="withImages" />
             <IconImageOutline v-else />
         </ToolButton>
-        <ToolButton class="w-8 h-8" @click="clear">
+        <ToolButton class="w-8 h-8" v-if="hasClips" @click="clear">
             <IconTrash />
         </ToolButton>
         <ToolButton class="w-8 h-8" @click="$emit('open-prefs')">
