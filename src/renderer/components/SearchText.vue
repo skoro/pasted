@@ -12,6 +12,14 @@ const focus = () => {
   }
 };
 
+function resetFilter() {
+  if (clipboardStore.filter.length === 0) {
+    searchInput.value.blur();
+  } else {
+    clipboardStore.filter = '';
+  }
+}
+
 onMounted(() => {
   bindKey(keyboard.search, focus);
 });
@@ -23,5 +31,6 @@ onMounted(() => {
         v-model="clipboardStore.filter"
         ref="searchInput"
         placeholder="Press Ctrl-K to search..."
+        @keyup.esc="resetFilter"
     />
 </template>
