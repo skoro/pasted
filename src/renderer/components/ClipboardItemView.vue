@@ -33,10 +33,10 @@ const isImage = computed(() => props.clip.image);
 const isUrl = computed(() => Clip.isUrl(props.clip));
 
 /**
- * @param {PointerEvent} event
+ * @param {?PointerEvent} event
  */
 function copyItem(event) {
-  if (event.ctrlKey && isUrl.value) {
+  if (event && event.ctrlKey && isUrl.value) {
     emit('open-url');
   } else {
     emit('copy-item');
