@@ -1,14 +1,14 @@
 <script setup>
 import { toRaw, onMounted } from 'vue';
-import HeaderBar from './HeaderBar.vue';
-import ToolButton from './forms/ToolButton.vue';
-import IconCopy from './icons/IconCopy.vue';
-import IconTrash from './icons/IconTrash.vue';
-import IconCross from './icons/IconCross.vue';
-import IconStarOutline from './icons/IconStarOutline.vue';
-import IconStarSolid from './icons/IconStarSolid.vue';
-import { keyboard, bindKey, bindEscKey } from '../keyshortcuts';
-import { useClipboardStore } from '../stores/useClipboardStore';
+import HeaderBar from '../HeaderBar.vue';
+import ToolButton from '../forms/ToolButton.vue';
+import IconCopy from '../icons/IconCopy.vue';
+import IconTrash from '../icons/IconTrash.vue';
+import IconCross from '../icons/IconCross.vue';
+import IconStarOutline from '../icons/IconStarOutline.vue';
+import IconStarSolid from '../icons/IconStarSolid.vue';
+import { keyboard, bindKey, bindEscKey } from '../../keyshortcuts';
+import { useClipboardStore } from '../../stores/useClipboardStore';
 
 const props = defineProps({
   clip: {

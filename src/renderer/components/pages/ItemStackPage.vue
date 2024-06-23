@@ -1,8 +1,8 @@
 <script setup>
-import HeaderActions from './HeaderActions.vue';
-import ClipboardItem from './ClipboardItem.vue';
-import FooterActions from './FooterActions.vue';
-import { useClipboardStore } from '../stores/useClipboardStore';
+import HeaderActions from '../HeaderActions.vue';
+import ClipboardItem from '../ClipboardItem.vue';
+import FooterActions from '../FooterActions.vue';
+import { useClipboardStore } from '../../stores/useClipboardStore';
 
 const clipboard = useClipboardStore();
 </script>
@@ -17,13 +17,13 @@ const clipboard = useClipboardStore();
             :key="clip.id"
             :clip="clip"
             :index="index + 1"
-            @peek-item="$emit('page-viewer', clip)"
+            @peek-item="$emit('open-page', 'ItemViewerPage', clip)"
         >
         </ClipboardItem>
     </div>
 
     <FooterActions
-        @open-prefs="$emit('page-prefs')"
+        @open-prefs="$emit('open-page', 'PreferencesPage')"
     >
     </FooterActions>
 
