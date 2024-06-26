@@ -1,13 +1,13 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import HeaderBar from './HeaderBar.vue';
-import IconCross from './icons/IconCross.vue';
-import KeyboardShortcut from './KeyboardShortcut.vue';
-import ToolButton from './forms/ToolButton.vue';
-import CheckboxElem from './forms/CheckboxElement.vue';
-import { usePreferencesStore } from '../stores/usePreferencesStore';
-import { keyboard, bindEscKey } from '../keyshortcuts';
-import { version as appVersion } from '../../../package.json';
+import HeaderBar from '../HeaderBar.vue';
+import IconCross from '../icons/IconCross.vue';
+import KeyboardShortcut from '../KeyboardShortcut.vue';
+import ToolButton from '../forms/ToolButton.vue';
+import CheckboxElem from '../forms/CheckboxElement.vue';
+import { usePreferencesStore } from '../../stores/usePreferencesStore';
+import { keyboard, bindEscKey } from '../../keyshortcuts';
+import { version as appVersion } from '../../../../package.json';
 
 const emit = defineEmits(['close-page']);
 

@@ -13,6 +13,7 @@ const emit = defineEmits([
   'copy-item',
   'remove-item',
   'peek-item',
+  'qr-item',
   'open-url',
 ]);
 
