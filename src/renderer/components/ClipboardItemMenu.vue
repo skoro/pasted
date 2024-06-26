@@ -1,16 +1,26 @@
 <script setup>
+import Clip from '../../models/clip';
 import ToolButton from './forms/ToolButton.vue';
 import IconBack from './icons/IconBack.vue';
 import IconCopy from './icons/IconCopy.vue';
 import IconTrash from './icons/IconTrash.vue';
 import IconSearch from './icons/IconSearch.vue';
+import IconQR from './icons/IconQR.vue';
 
 defineEmits([
   'switch-view',
   'copy-item',
   'remove-item',
   'peek-item',
+  'qr-item',
 ]);
+
+defineProps({
+  clip: {
+    type: Object,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -23,6 +33,9 @@ defineEmits([
         </ToolButton>
         <ToolButton class="h-8 w-8" @click="$emit('peek-item')" tooltip="Peek">
             <IconSearch />
+        </ToolButton>
+        <ToolButton v-if="Clip.canMakeQR(clip)" class="h-8 w-8" @click="$emit('qr-item')" tooltip="QR code">
+            <IconQR />
         </ToolButton>
         <ToolButton class="h-8 w-8" @click="$emit('remove-item')" tooltip="Delete">
             <IconTrash />

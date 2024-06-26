@@ -15,7 +15,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['peek-item']);
+const emit = defineEmits(['peek-item', 'qr-item']);
 
 const isCopied = ref(false);
 const clipboardStore = useClipboardStore();
@@ -66,6 +66,11 @@ function onPeekItem() {
   emit('peek-item');
   setViewContext();
 }
+
+function onQrItem() {
+  emit('qr-item');
+  setViewContext();
+}
 </script>
 
 <template>
@@ -82,6 +87,7 @@ function onPeekItem() {
             @copy-item="onCopyItem"
             @remove-item="onRemoveItem"
             @peek-item="onPeekItem"
+            @qr-item="onQrItem"
         >
         </component>
     </div>

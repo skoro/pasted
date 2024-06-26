@@ -61,6 +61,15 @@ function contains(model, search) {
         && model.data.toLowerCase().includes(search.toLowerCase());
 }
 
+/**
+ * @param {Model} model
+ *
+ * @returns {boolean}
+ */
+function canMakeQR(model) {
+  return !model.image && model.data.length < 400;
+}
+
 export default {
-  factory, image, equals, contains,
+  factory, image, equals, contains, canMakeQR,
 };

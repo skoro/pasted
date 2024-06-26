@@ -18,6 +18,7 @@ const clipboard = useClipboardStore();
             :clip="clip"
             :index="index + 1"
             @peek-item="$emit('open-page', 'ItemViewerPage', clip)"
+            @qr-item="$emit('open-page', 'QrCodePage', clip)"
         >
         </ClipboardItem>
     </div>

@@ -7,8 +7,10 @@ import IconTrash from '../icons/IconTrash.vue';
 import IconCross from '../icons/IconCross.vue';
 import IconStarOutline from '../icons/IconStarOutline.vue';
 import IconStarSolid from '../icons/IconStarSolid.vue';
+import IconQR from '../icons/IconQR.vue';
 import { keyboard, bindKey, bindEscKey } from '../../keyshortcuts';
 import { useClipboardStore } from '../../stores/useClipboardStore';
+import Clip from '../../../models/clip';
 
 const props = defineProps({
   clip: {
@@ -17,7 +19,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['close-page']);
+const emit = defineEmits(['open-page', 'close-page']);
 
 const clipboard = useClipboardStore();
 
@@ -61,6 +63,9 @@ onMounted(() => {
                 <ToolButton class="h-8 w-8" @click="toggleStarred">
                     <IconStarSolid v-if="clip.starred"></IconStarSolid>
                     <IconStarOutline v-else></IconStarOutline>
+                </ToolButton>
+                <ToolButton v-if="Clip.canMakeQR(clip)" class="h-8 w-8" @click="$emit('open-page', 'QrCodePage', clip)">
+                  <IconQR></IconQR>
                 </ToolButton>
                 <ToolButton class="h-8 w-8" @click="removeClip">
                     <IconTrash></IconTrash>

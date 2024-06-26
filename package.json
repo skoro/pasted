@@ -24,6 +24,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@akamfoad/qrcode": "^0.3.2",
     "@electron-forge/cli": "^7.2.0",
     "@electron-forge/maker-deb": "^7.2.0",
     "@electron-forge/maker-rpm": "^7.2.0",

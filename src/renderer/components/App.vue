@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import ItemStackPage from './pages/ItemStackPage.vue';
 import ItemViewerPage from './pages/ItemViewerPage.vue';
 import PreferencesPage from './pages/PreferencesPage.vue';
+import QrCodePage from './pages/QrCodePage.vue';
 import { resetKeys } from '../keyshortcuts';
 
 const currentPage = ref('ItemStackPage');
@@ -14,6 +15,7 @@ const pages = {
   ItemStackPage,
   ItemViewerPage,
   PreferencesPage,
+  QrCodePage,
 };
 
 /**
@@ -31,6 +33,7 @@ function pushPage(page, clipObj) {
  */
 function popPage() {
   pageStack.pop();
+  // FIXME: pageStack can be empty for some reason.
   const page = pageStack[pageStack.length - 1];
   resetKeys();
   currentPage.value = page;
