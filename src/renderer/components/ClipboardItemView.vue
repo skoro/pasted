@@ -63,7 +63,10 @@ onUpdated(bindShortcut);
         </a>
     </div>
     <div v-if="isShortcutIndex" class="flex flex-col w-6 mr-1">
-        <p class="bg-slate-100 p-1 rounded-full text-xs text-center text-slate-400">{{ index }}</p>
+        <a href="#"
+          @click.prevent="copyItem"
+          class="bg-slate-100 p-1 rounded-full text-xs text-center text-slate-400 hover:ring-2 hover:ring-gray-200"
+        >{{ index }}</a>
     </div>
     <div class="flex flex-col text-slate-800 w-6 space-y-4 p-0.5">
         <ToolButton @click="$emit('switch-view', 'menu')">

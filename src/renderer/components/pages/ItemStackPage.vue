@@ -11,7 +11,7 @@ const clipboard = useClipboardStore();
 
     <HeaderActions/>
 
-    <div class="my-11 space-y-2 p-1">
+    <div class="my-11 space-y-2 p-1 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <ClipboardItem
             v-for="(clip, index) in clipboard.clips"
             :key="clip.id"
