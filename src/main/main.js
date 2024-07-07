@@ -81,7 +81,13 @@ const createTrayIcon = (mainWindow) => {
   };
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Quit', role: 'quit' },
+    {
+      label: 'Quit',
+      click() {
+        app.isQuiting = true;
+        app.quit();
+      },
+    },
   ]);
 
   // Gnome tray does not support actions by icon clicking.
@@ -131,6 +137,14 @@ app.whenReady().then(() => {
   }
 
   const mainWindow = createMainWindow();
+
+  // do not close the window, instead minimize it to tray.
+  mainWindow.on('close', (event) => {
+    if (!app.isQuiting) {
+      event.preventDefault(); // prevent closing
+      mainWindow.hide();
+    }
+  });
 
   createTrayIcon(mainWindow);
   registerGlobalShortcut(mainWindow);
