@@ -58,10 +58,10 @@ onUpdated(bindShortcut);
         >{{ index }}</a>
     </div>
     <div class="flex flex-col text-slate-800 w-6 space-y-4 p-0.5">
-        <ToolButton @click="$emit('switch-view', 'menu')">
+        <ToolButton class="max-[279px]:w-4 max-[279px]:h-4" @click="$emit('switch-view', 'menu')">
             <IconDotsHorizontal />
         </ToolButton>
-        <ToolButton @click="$emit('toggle-starred')">
+        <ToolButton class="max-[279px]:w-4 max-[279px]:h-4" @click="$emit('toggle-starred')">
             <IconStarSolid v-if="clip.starred" />
             <IconStarOutline v-else />
         </ToolButton>
