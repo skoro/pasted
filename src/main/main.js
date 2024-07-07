@@ -92,7 +92,7 @@ const createTrayIcon = (mainWindow) => {
 
   // Gnome tray does not support actions by icon clicking.
   // There is a menu item does the same as clicking on the icon to show/hide the main window.
-  if (isPlatformLinux) {
+  if (isPlatformLinux()) {
     contextMenu.insert(0, new MenuItem({
       label: 'Show/Hide',
       click: () => showHideCallback(),
