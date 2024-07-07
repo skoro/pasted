@@ -6,7 +6,7 @@ defineProps({
 });
 </script>
 <template>
-    <button class="hover:text-black group relative max-[268px]:w-6 max-[268px]:h-6">
+    <button class="hover:text-black group relative max-[280px]:w-6 max-[280px]:h-6">
         <slot></slot>
         <span v-if="tooltip" class="
             absolute
