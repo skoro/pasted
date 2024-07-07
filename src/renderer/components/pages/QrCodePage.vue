@@ -12,7 +12,10 @@ const props = defineProps({
 
 const emit = defineEmits(['close-page']);
 
-const qrcode = new QRCodeSVG(props.clip.data);
+const qrcode = new QRCodeSVG(props.clip.data, {
+  width: '100vw',
+  height: '100vh',
+});
 const svg = ref(qrcode.toString());
 
 function closePage() {
@@ -25,7 +28,7 @@ onMounted(() => bindEscKey(closePage));
 <template>
     <div>
         <a href="#" title="Esc or click to close" @click.prevent="$emit('close-page')">
-            <span v-html="svg"></span>
+            <div v-html="svg"></div>
         </a>
     </div>
 </template>
