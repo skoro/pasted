@@ -57,7 +57,7 @@ function clear() {
 }
 
 onMounted(() => {
-  bindKey(keyboard.toggleStarred, () => { onlyStarred.value = !onlyStarred.value; });
+  bindKey(keyboard.toggleStarred, () => { onlyStarred.value = hasStarred.value ? !onlyStarred.value : false; });
   bindKey(keyboard.toggleImages, () => {
     withImages.value = hasImages.value ? !withImages.value : false;
   });
