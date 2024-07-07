@@ -15,7 +15,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['peek-item']);
+const emit = defineEmits(['peek-item', 'qr-item']);
 
 const isCopied = ref(false);
 const clipboardStore = useClipboardStore();
@@ -67,6 +67,11 @@ function onPeekItem() {
   setViewContext();
 }
 
+function onQrItem() {
+  emit('qr-item');
+  setViewContext();
+}
+
 function onOpenUrl() {
   window.electronAPI.openUrl(props.clip.data);
 }
@@ -86,6 +91,7 @@ function onOpenUrl() {
             @copy-item="onCopyItem"
             @remove-item="onRemoveItem"
             @peek-item="onPeekItem"
+            @qr-item="onQrItem"
             @open-url="onOpenUrl"
         >
         </component>

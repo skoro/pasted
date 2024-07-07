@@ -63,6 +63,15 @@ function contains(model, search) {
 
 /**
  * @param {Model} model
+ *
+ * @returns {boolean}
+ */
+function canMakeQR(model) {
+  return !model.image && model.data.length < 400;
+}
+
+/**
+ * @param {Model} model
  * @returns {boolean}
  */
 function isUrl(model) {
@@ -83,5 +92,5 @@ function isUrl(model) {
 }
 
 export default {
-  factory, image, equals, contains, isUrl,
+  factory, image, equals, contains, canMakeQR, isUrl,
 };
