@@ -61,6 +61,27 @@ function contains(model, search) {
         && model.data.toLowerCase().includes(search.toLowerCase());
 }
 
+/**
+ * @param {Model} model
+ * @returns {boolean}
+ */
+function isUrl(model) {
+  if (model.image) {
+    return false;
+  }
+
+  try {
+    const url = new URL(model.data);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      throw new Error();
+    }
+  } catch (_) {
+    return false;
+  }
+
+  return true;
+}
+
 export default {
-  factory, image, equals, contains,
+  factory, image, equals, contains, isUrl,
 };

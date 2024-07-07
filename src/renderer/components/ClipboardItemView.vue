@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onUpdated, onMounted } from 'vue';
 import { bindKey } from '../keyshortcuts';
+import Clip from '../../models/clip';
 import ToolButton from './forms/ToolButton.vue';
 import IconDotsHorizontal from './icons/IconDotsHorizontal.vue';
 import IconStarOutline from './icons/IconStarOutline.vue';
@@ -12,6 +13,7 @@ const emit = defineEmits([
   'copy-item',
   'remove-item',
   'peek-item',
+  'open-url',
 ]);
 
 const props = defineProps({
@@ -28,9 +30,17 @@ const props = defineProps({
 const isShortcutIndex = computed(() => props.index > 0 && props.index < 10);
 const lines = computed(() => props.clip.data.substring(0, 199).trimStart().split('\n'));
 const isImage = computed(() => props.clip.image);
+const isUrl = computed(() => Clip.isUrl(props.clip));
 
-function copyItem() {
-  emit('copy-item');
+/**
+ * @param {?PointerEvent} event
+ */
+function copyItem(event) {
+  if (event && event.ctrlKey && isUrl.value) {
+    emit('open-url');
+  } else {
+    emit('copy-item');
+  }
 }
 
 function bindShortcut() {
@@ -44,7 +54,7 @@ onUpdated(bindShortcut);
 
 <template>
     <div class="flex-1 overflow-hidden">
-        <a href="#" @click.prevent="copyItem">
+        <a href="#" @click.prevent="copyItem" :title="isUrl ? 'Follow link (ctrl + click)' : ''">
             <img class="object-scale-down h-20" v-if="isImage" :src="clip.data"/>
             <ul v-else v-for="(line, index) in lines" :key="index">
                 <li class="text-gray-800">{{ line }}</li>

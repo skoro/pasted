@@ -66,6 +66,10 @@ function onPeekItem() {
   emit('peek-item');
   setViewContext();
 }
+
+function onOpenUrl() {
+  window.electronAPI.openUrl(props.clip.data);
+}
 </script>
 
 <template>
@@ -82,6 +86,7 @@ function onPeekItem() {
             @copy-item="onCopyItem"
             @remove-item="onRemoveItem"
             @peek-item="onPeekItem"
+            @open-url="onOpenUrl"
         >
         </component>
     </div>
