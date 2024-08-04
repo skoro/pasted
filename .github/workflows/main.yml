@@ -9,14 +9,14 @@ on:
         default: ''
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build-electron-linux:
-    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.job-to-run == 'build-electron-linux' || github.event.inputs.job-to-run == 'build-electron-snap' || github.event.inputs.job-to-run == '' }}
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.job-to-run == 'build-electron-linux' || github.event.inputs.job-to-run == '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,12 +26,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: Build Linux
+      - name: Build Linux deb
         working-directory: .
         run: |
           npm ci
           npm run make
-      - name: Build deb, rpm
+      - name: Publish Linux
         working-directory: .
         run: |
           npm ci
@@ -47,12 +47,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: Build Windows
+      - name: Build Windows installer
         working-directory: .
         run: |
           npm ci
           npm run make
-      - name: Build windows installer
+      - name: Build Windows installer
         working-directory: .
         run: |
           npm ci
