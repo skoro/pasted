@@ -86,8 +86,8 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'flawiddsouza',
-          name: 'Restfox',
+          owner: 'skoro',
+          name: 'Pasted',
         },
         prerelease: true,
       },
