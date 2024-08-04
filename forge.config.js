@@ -81,4 +81,16 @@ module.exports = {
       },
     },
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'flawiddsouza',
+          name: 'Restfox',
+        },
+        prerelease: true,
+      },
+    },
+  ],
 };
