@@ -7,7 +7,7 @@ import ToolButton from '../forms/ToolButton.vue';
 import CheckboxElem from '../forms/CheckboxElement.vue';
 import { usePreferencesStore } from '../../stores/usePreferencesStore';
 import { keyboard, bindEscKey } from '../../keyshortcuts';
-import { version as appVersion } from '../../../../package.json';
+import { version as appVersion, homepage } from '../../../../package.json';
 
 const emit = defineEmits(['close-page']);
 
@@ -15,6 +15,13 @@ const prefs = usePreferencesStore();
 
 function closePage() {
   emit('close-page');
+}
+
+/**
+ * @param {string} url
+ */
+function openUrl(url) {
+  window.electronAPI.openUrl(url);
 }
 
 onMounted(() => {
@@ -72,7 +79,10 @@ onUnmounted(() => {
             </div>
 
             <div class="text-sm text-slate-400 mt-4 pt-2">
-                Version: <span class="font-medium">{{ appVersion }}</span>
+                <div>Version: <span class="font-medium">{{ appVersion }}</span></div>
+                <div>
+                    Project home: <a href="#" @click.prevent="openUrl(homepage)">{{ homepage }}</a>
+                </div>
             </div>
         </div>
     </div>
