@@ -4,6 +4,7 @@
   "productName": "Pasted",
   "version": "0.4.0",
   "description": "Yet another clipboard manager",
+  "homepage": "https://github.com/skoro/pasted",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
