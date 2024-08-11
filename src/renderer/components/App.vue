@@ -23,7 +23,6 @@ const pages = {
  */
 function pushPage(page, clipObj) {
   pageStack.push(page);
-  resetKeys();
   currentPage.value = page;
   clip.value = clipObj;
 }
