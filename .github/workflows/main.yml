@@ -1,0 +1,60 @@
+name: Publish Electron Binaries
+
+on:
+  workflow_dispatch:
+    inputs:
+      job-to-run:
+        description: 'Job to run (leave empty to run all)'
+        required: false
+        default: ''
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build-electron-linux:
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.job-to-run == 'build-electron-linux' || github.event.inputs.job-to-run == '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Build Linux deb
+        working-directory: .
+        run: |
+          npm ci
+          npm run make
+      - name: Publish Linux
+        working-directory: .
+        run: |
+          npm ci
+          npm run publish
+  build-electron-windows:
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.job-to-run == 'build-electron-windows' || github.event.inputs.job-to-run == '' }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Build Windows installer
+        working-directory: .
+        run: |
+          npm ci
+          npm run make
+      - name: Build Windows installer
+        working-directory: .
+        run: |
+          npm ci
+          npm run publish
+  
