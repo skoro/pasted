@@ -111,3 +111,9 @@ onUnmounted(() => {
         </div>
     </div>
 </template>
+
+<style>
+textarea {
+  resize: none;
+}
+</style>
