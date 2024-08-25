@@ -76,6 +76,7 @@ onUnmounted(() => {
                 <KeyboardShortcut label="Remove items" :keys="keyboard.removeItems"/>
                 <KeyboardShortcut label="Open preferences" :keys="keyboard.openPrefs"/>
                 <KeyboardShortcut label="Copy and close peeking item" :keys="keyboard.copyItem"/>
+                <KeyboardShortcut label="Close window" :keys="keyboard.hideWindow"/>
             </div>
 
             <div class="text-sm text-slate-400 mt-4 pt-2">

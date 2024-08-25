@@ -36,9 +36,15 @@ function setStartAppAtLogin(open) {
   }
 }
 
+function quitApp() {
+  app.isQuiting = true;
+  app.quit();
+}
+
 export {
   isPlatformLinux,
   isPlatformWindows,
   isPlatformDarwin,
   setStartAppAtLogin,
+  quitApp,
 };
