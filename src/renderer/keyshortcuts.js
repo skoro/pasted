@@ -9,6 +9,7 @@ const keyboard = {
   removeItems: 'ctrl+r',
   openPrefs: 'ctrl+o',
   copyItem: 'space',
+  hideWindow: 'ctrl+w',
 };
 
 /**
