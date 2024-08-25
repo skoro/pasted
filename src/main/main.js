@@ -5,7 +5,9 @@ import {
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 import { keyboard } from '../renderer/keyshortcuts';
-import { setStartAppAtLogin, isPlatformLinux, isPlatformDarwin } from './system';
+import {
+  setStartAppAtLogin, isPlatformLinux, isPlatformDarwin, quitApp,
+} from './system';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
@@ -84,10 +86,7 @@ const createTrayIcon = (mainWindow) => {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Quit',
-      click() {
-        app.isQuiting = true;
-        app.quit();
-      },
+      click: quitApp,
     },
   ]);
 
