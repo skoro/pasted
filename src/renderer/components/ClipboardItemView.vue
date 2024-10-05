@@ -15,6 +15,7 @@ const emit = defineEmits([
   'peek-item',
   'qr-item',
   'open-url',
+  'save-item',
 ]);
 
 const props = defineProps({

@@ -10,6 +10,7 @@ import IconCross from '../icons/IconCross.vue';
 import IconStarOutline from '../icons/IconStarOutline.vue';
 import IconStarSolid from '../icons/IconStarSolid.vue';
 import IconQR from '../icons/IconQR.vue';
+import IconDownload from '../icons/IconDownload.vue';
 import { keyboard, bindKey, bindEscKey } from '../../keyshortcuts';
 import { useClipboardStore } from '../../stores/useClipboardStore';
 import Clip from '../../../models/clip';
@@ -58,6 +59,10 @@ function recalcHeight() {
   textAreaHeight.value = window.innerHeight - headerBar.value.$el.clientHeight - 16;
 }
 
+function saveImage() {
+  window.electronAPI.saveImage(props.clip.data);
+}
+
 onMounted(() => {
   bindKey(keyboard.toggleStarred, toggleStarred);
   bindKey(keyboard.removeItems, removeClip);
@@ -94,6 +99,9 @@ onUnmounted(() => {
                 </ToolButton>
                 <ToolButton class="h-8 w-8" @click="removeClip">
                     <IconTrash></IconTrash>
+                </ToolButton>
+                <ToolButton class="h-8 w-8" @click="saveImage" v-if="clip.image">
+                    <IconDownload></IconDownload>
                 </ToolButton>
             </div>
             <ToolButton class="h-8 w-8" @click="closePage">
