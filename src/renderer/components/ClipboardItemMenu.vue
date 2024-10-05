@@ -6,6 +6,7 @@ import IconCopy from './icons/IconCopy.vue';
 import IconTrash from './icons/IconTrash.vue';
 import IconSearch from './icons/IconSearch.vue';
 import IconQR from './icons/IconQR.vue';
+import IconDownload from './icons/IconDownload.vue';
 
 defineEmits([
   'switch-view',
@@ -13,6 +14,7 @@ defineEmits([
   'remove-item',
   'peek-item',
   'qr-item',
+  'save-item',
 ]);
 
 defineProps({
@@ -39,6 +41,9 @@ defineProps({
         </ToolButton>
         <ToolButton class="h-8 w-8" @click="$emit('remove-item')" tooltip="Delete">
             <IconTrash />
+        </ToolButton>
+        <ToolButton class="h-8 w-8" @click="$emit('save-item')" tooltip="Save" v-if="clip.image">
+            <IconDownload />
         </ToolButton>
     </div>
 </template>
