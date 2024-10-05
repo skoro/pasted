@@ -75,6 +75,13 @@ function onQrItem() {
 function onOpenUrl() {
   window.electronAPI.openUrl(props.clip.data);
 }
+
+function onSaveItem() {
+  // FIXME: only image can be saved.
+  if (props.clip.image) {
+    window.electronAPI.saveImage(props.clip.data);
+  }
+}
 </script>
 
 <template>
@@ -93,6 +100,7 @@ function onOpenUrl() {
             @peek-item="onPeekItem"
             @qr-item="onQrItem"
             @open-url="onOpenUrl"
+            @save-item="onSaveItem"
         >
         </component>
     </div>
