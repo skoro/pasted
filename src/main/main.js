@@ -5,7 +5,9 @@ import {
 import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 import { keyboard } from '../renderer/keyshortcuts';
-import { setStartAppAtLogin, isPlatformLinux, isPlatformDarwin } from './system';
+import {
+  setStartAppAtLogin, isPlatformLinux, isPlatformDarwin, quitApp,
+} from './system';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
@@ -58,7 +60,8 @@ const createMainWindow = () => {
 
   ipcMain.on('clip:select', (event, data) => clipboardEventEmitter.copy(data));
   // fires at start, see renderer onload.
-  ipcMain.on('will-show-window', (event) => mainWindow.show());
+  ipcMain.on('will-show-window', () => mainWindow.show());
+  ipcMain.on('will-hide-window', () => mainWindow.hide());
   ipcMain.on('pref:startAtLogin', (event, value) => setStartAppAtLogin(value));
   ipcMain.on('open:url', (_, url) => shell.openExternal(url));
 
@@ -84,10 +87,7 @@ const createTrayIcon = (mainWindow) => {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Quit',
-      click() {
-        app.isQuiting = true;
-        app.quit();
-      },
+      click: quitApp,
     },
   ]);
 

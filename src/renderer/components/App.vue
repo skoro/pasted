@@ -4,7 +4,7 @@ import ItemStackPage from './pages/ItemStackPage.vue';
 import ItemViewerPage from './pages/ItemViewerPage.vue';
 import PreferencesPage from './pages/PreferencesPage.vue';
 import QrCodePage from './pages/QrCodePage.vue';
-import { resetKeys } from '../keyshortcuts';
+import { resetKeys, bindKey, keyboard } from '../keyshortcuts';
 
 const currentPage = ref('ItemStackPage');
 const clip = ref({});
@@ -19,9 +19,17 @@ const pages = {
 };
 
 /**
+ * Registers the window keyboard shortcuts.
+ */
+function registerAppKeys() {
+  bindKey(keyboard.hideWindow, () => window.electronAPI.willHideWindow());
+}
+
+/**
  * @param {string} page
  */
 function pushPage(page, clipObj) {
+  registerAppKeys();
   pageStack.push(page);
   currentPage.value = page;
   clip.value = clipObj;
@@ -35,11 +43,17 @@ function popPage() {
   // FIXME: pageStack can be empty for some reason.
   const page = pageStack[pageStack.length - 1];
   resetKeys();
+  registerAppKeys();
   currentPage.value = page;
   return page;
 }
 
-onMounted(() => pushPage('ItemStackPage'));
+function onStart() {
+  pushPage('ItemStackPage');
+  registerAppKeys();
+}
+
+onMounted(onStart);
 </script>
 
 <template>
