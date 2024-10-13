@@ -6,7 +6,7 @@ import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 import { keyboard } from '../renderer/keyshortcuts';
 import {
-  setStartAppAtLogin, isPlatformLinux, isPlatformDarwin, quitApp,
+  setStartAppAtLogin, isPlatformLinux, isPlatformDarwin, saveImage, quitApp,
 } from './system';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -64,6 +64,7 @@ const createMainWindow = () => {
   ipcMain.on('will-hide-window', () => mainWindow.hide());
   ipcMain.on('pref:startAtLogin', (event, value) => setStartAppAtLogin(value));
   ipcMain.on('open:url', (_, url) => shell.openExternal(url));
+  ipcMain.on('save:image', (_, image) => saveImage(mainWindow, image));
 
   return mainWindow;
 };

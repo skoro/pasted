@@ -19,4 +19,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   willHideWindow: () => ipcRenderer.send('will-hide-window'),
   changeStartAtLogin: (value) => ipcRenderer.send('pref:startAtLogin', value),
   openUrl: (value) => ipcRenderer.send('open:url', value),
+  saveImage: (value) => ipcRenderer.send('save:image', value),
 });
