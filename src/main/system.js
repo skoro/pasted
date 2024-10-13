@@ -85,10 +85,16 @@ async function saveImage(parentWindow, imageDataUrl) {
   }
 }
 
+function quitApp() {
+  app.isQuiting = true;
+  app.quit();
+}
+
 export {
   isPlatformLinux,
   isPlatformWindows,
   isPlatformDarwin,
   setStartAppAtLogin,
   saveImage,
+  quitApp,
 };

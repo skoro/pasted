@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   selectClipModel: (clipModel) => ipcRenderer.send('clip:select', clipModel),
   clearList: () => ipcRenderer.send('clear:list'),
   willShowWindow: () => ipcRenderer.send('will-show-window'),
+  willHideWindow: () => ipcRenderer.send('will-hide-window'),
   changeStartAtLogin: (value) => ipcRenderer.send('pref:startAtLogin', value),
   openUrl: (value) => ipcRenderer.send('open:url', value),
   saveImage: (value) => ipcRenderer.send('save:image', value),

@@ -1,5 +1,7 @@
 <script setup>
-import { toRaw, onMounted } from 'vue';
+import {
+  toRaw, onMounted, onUnmounted, ref, computed,
+} from 'vue';
 import HeaderBar from '../HeaderBar.vue';
 import ToolButton from '../forms/ToolButton.vue';
 import IconCopy from '../icons/IconCopy.vue';
@@ -24,6 +26,11 @@ const emit = defineEmits(['open-page', 'close-page']);
 
 const clipboard = useClipboardStore();
 
+const textAreaHeight = ref(0);
+const headerBar = ref(null);
+
+const isImage = computed(() => props.clip.image);
+
 function closePage() {
   emit('close-page');
 }
@@ -47,6 +54,13 @@ function toggleStarred() {
 
 function saveImage() {
   window.electronAPI.saveImage(props.clip.data);
+}  
+
+/**
+ * Calculate text area height.
+ */
+function recalcHeight() {
+  textAreaHeight.value = window.innerHeight - headerBar.value.$el.clientHeight - 16;
 }
 
 onMounted(() => {
@@ -54,13 +68,24 @@ onMounted(() => {
   bindKey(keyboard.removeItems, removeClip);
   bindKey(keyboard.copyItem, copyClip);
   bindEscKey(closePage);
+
+  if (!isImage.value) {
+    recalcHeight();
+    window.addEventListener('resize', recalcHeight);
+  }
+});
+
+onUnmounted(() => {
+  if (!isImage.value) {
+    window.removeEventListener('resize', recalcHeight);
+  }
 });
 </script>
 
 <template>
     <div class="relative">
 
-        <HeaderBar class="text-gray-600 justify-between px-4">
+        <HeaderBar ref="headerBar" class="text-gray-600 justify-between px-4">
             <div class="flex space-x-4 items-center">
                 <ToolButton class="h-8 w-8" @click="copyClip">
                     <IconCopy></IconCopy>
@@ -84,9 +109,19 @@ onMounted(() => {
             </ToolButton>
         </HeaderBar>
 
-        <div class="my-11 space-y-2 p-1">
-            <img v-if="clip.image" :src="clip.data"/>
-            <pre v-else>{{ clip.data }}</pre>
+        <div class="mt-11 space-y-2 p-1">
+            <img v-if="isImage" :src="clip.data"/>
+            <textarea
+              class="w-full h-full text-sm focus:outline-2 focus:outline-slate-300 mousetrap"
+              :style="{ height: textAreaHeight + 'px' }"
+              v-else
+            >{{ clip.data }}</textarea>
         </div>
     </div>
 </template>
+
+<style>
+textarea {
+  resize: none;
+}
+</style>
