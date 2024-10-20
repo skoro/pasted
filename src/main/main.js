@@ -6,7 +6,7 @@ import path from 'node:path';
 import { clipboardEventEmitter } from './clipboard';
 import { keyboard } from '../renderer/keyshortcuts';
 import {
-  setStartAppAtLogin, isPlatformLinux, isPlatformDarwin, quitApp, saveImage,
+  setStartAppAtLogin, isPlatformLinux, isPlatformDarwin, saveImage, quitApp,
 } from './system';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -26,6 +26,7 @@ const createMainWindow = () => {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      spellcheck: false,
     },
     // initially the window is hidden, if renderer submits 'will-show-window' event
     // the window shows, see below.
