@@ -61,13 +61,6 @@ function recalcHeight() {
 
 function saveImage() {
   window.electronAPI.saveImage(props.clip.data);
-}  
-
-/**
- * Calculate text area height.
- */
-function recalcHeight() {
-  textAreaHeight.value = window.innerHeight - headerBar.value.$el.clientHeight - 16;
 }
 
 onMounted(() => {
