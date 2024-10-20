@@ -26,6 +26,9 @@ const createMainWindow = () => {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      webgl: false,
+      enableWebSQL: false,
+      transparent: false,
     },
     // initially the window is hidden, if renderer submits 'will-show-window' event
     // the window shows, see below.
