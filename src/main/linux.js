@@ -22,6 +22,7 @@ async function enableAutostart() {
       + `Name=${app.getName()}\n`
       + 'Icon=/usr/share/pixmaps/pasted.png\n'
       + `Comment=${app.getName()} startup script\n`
+      + `TryExec=${app.getPath('exe')}\n`
       + `Exec=${app.getPath('exe')}\n`
       + 'StartupNotify=false\n'
       + 'Terminal=false\n'
