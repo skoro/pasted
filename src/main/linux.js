@@ -18,7 +18,7 @@ async function enableAutostart() {
     const desktopEntry = ""
       + '[Desktop Entry]\n'
       + 'Type=Application\n'
-      + `Version=${app.getVersion()}\n`
+      + `Version=1.0\n`
       + `Name=${app.getName()}\n`
       + `Comment=${app.getName()} startup script\n`
       + `Exec=${app.getPath('exe')}\n`
