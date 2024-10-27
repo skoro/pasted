@@ -1,6 +1,7 @@
 import { app, dialog, nativeImage } from 'electron';
 import path from 'node:path';
 import { writeFile } from 'node:fs/promises';
+import * as linux from './linux';
 
 /**
  * @returns {boolean}
@@ -24,18 +25,23 @@ function isPlatformDarwin() {
 }
 
 /**
- * @param {boolean} open
+ * @param {boolean} open Should the app opened at login.
  */
-function setStartAppAtLogin(open) {
+async function setStartAppAtLogin(open) {
   if (isPlatformLinux()) {
-    // todo
-    // eslint-disable-next-line no-console
-    console.error('setStartAppAtLogin not implemented yet for Linux.');
+    // ElectronJS does not support yet open application at login on Linux.
+    // There is be a custom solution of openAtLogin.
+    await (open ? linux.enableAutostart() : linux.disableAutostart());
   } else {
     app.setLoginItemSettings({
       openAtLogin: Boolean(open),
     });
   }
+}
+
+function quitApp() {
+  app.isQuiting = true;
+  app.quit();
 }
 
 /**
@@ -142,11 +148,6 @@ async function saveText(parentWindow, text, filename) {
   } catch (err) {
     dialog.showErrorBox('Save error', err.message);
   }
-}
-
-function quitApp() {
-  app.isQuiting = true;
-  app.quit();
 }
 
 export {

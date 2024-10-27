@@ -113,8 +113,9 @@ onUnmounted(() => {
         <div class="mt-11 space-y-2 p-1">
             <img v-if="isImage" :src="clip.data"/>
             <textarea
-              class="w-full h-full text-sm focus:outline-2 focus:outline-slate-300 mousetrap"
+              class="w-full h-full text-sm font-mono focus:outline-2 focus:outline-slate-300 mousetrap"
               :style="{ height: textAreaHeight + 'px' }"
+              disabled
               v-else
             >{{ clip.data }}</textarea>
         </div>
