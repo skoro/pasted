@@ -69,10 +69,12 @@ function makeFilenameWithDateTime(basename, extension, folder) {
  *
  * @param {import('electron').BaseWindow} parentWindow
  * @param {string} imageDataUrl An image encoded as data url.
+ * @param {string} [filename] Default file name.
  */
-async function saveImage(parentWindow, imageDataUrl) {
+async function saveImage(parentWindow, imageDataUrl, filename) {
   try {
-    const defaultFileName = path.join(app.getPath('pictures'), `image-${(new Date()).getTime().toString()}.png`);
+    const defaultFileName = filename
+      || makeFilenameWithDateTime('image', 'png', app.getPath('pictures'));
 
     const result = await dialog.showSaveDialog(parentWindow, {
       title: 'Save image',
@@ -91,8 +93,8 @@ async function saveImage(parentWindow, imageDataUrl) {
     let buffer;
 
     const image = nativeImage.createFromDataURL(imageDataUrl);
-    const filename = result.filePath;
-    const ext = path.extname(filename).toLowerCase();
+    const { filePath } = result;
+    const ext = path.extname(filePath).toLowerCase();
 
     switch (ext) {
       case '.png':
@@ -105,7 +107,7 @@ async function saveImage(parentWindow, imageDataUrl) {
         throw new Error(`Cannot convert image to ${ext.replace('.', '').toUpperCase()}`);
     }
 
-    await writeFile(filename, buffer);
+    await writeFile(filePath, buffer);
   } catch (err) {
     dialog.showErrorBox('Save error', err.message);
   }
