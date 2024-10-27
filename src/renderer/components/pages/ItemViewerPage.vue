@@ -52,15 +52,16 @@ function toggleStarred() {
   clipboard.toggleStarred(props.clip.id);
 }
 
+function saveClip() {
+  const method = props.clip.image ? 'saveImage' : 'saveText';
+  window.electronAPI[method](props.clip.data);
+}
+
 /**
  * Calculate text area height.
  */
 function recalcHeight() {
   textAreaHeight.value = window.innerHeight - headerBar.value.$el.clientHeight - 16;
-}
-
-function saveImage() {
-  window.electronAPI.saveImage(props.clip.data);
 }
 
 onMounted(() => {
@@ -100,7 +101,7 @@ onUnmounted(() => {
                 <ToolButton class="h-8 w-8" @click="removeClip">
                     <IconTrash></IconTrash>
                 </ToolButton>
-                <ToolButton class="h-8 w-8" @click="saveImage" v-if="clip.image">
+                <ToolButton class="h-8 w-8" @click="saveClip">
                     <IconDownload></IconDownload>
                 </ToolButton>
             </div>
