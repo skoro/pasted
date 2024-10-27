@@ -42,7 +42,7 @@ defineProps({
         <ToolButton class="h-8 w-8" @click="$emit('remove-item')" tooltip="Delete">
             <IconTrash />
         </ToolButton>
-        <ToolButton class="h-8 w-8" @click="$emit('save-item')" tooltip="Save" v-if="clip.image">
+        <ToolButton class="h-8 w-8" @click="$emit('save-item')" tooltip="Save">
             <IconDownload />
         </ToolButton>
     </div>

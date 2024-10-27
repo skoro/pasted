@@ -20,4 +20,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   changeStartAtLogin: (value) => ipcRenderer.send('pref:startAtLogin', value),
   openUrl: (value) => ipcRenderer.send('open:url', value),
   saveImage: (value) => ipcRenderer.send('save:image', value),
+  saveText: (value) => ipcRenderer.send('save:text', value),
 });
