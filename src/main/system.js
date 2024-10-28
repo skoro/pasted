@@ -51,7 +51,7 @@ function quitApp() {
  * @param {string} extension The filename extension without dot.
  * @param {string} [folder] Add the specified folder to the filename.
  *
- * @returns {string} The filename in format: "basename 2024-10-27 18:52.ext"
+ * @returns {string} The filename in format: "basename-202410271852.ext"
  */
 function makeFilenameWithDateTime(basename, extension, folder) {
   const padZero = (value) => value.toString().padStart(2, '0');
@@ -60,12 +60,12 @@ function makeFilenameWithDateTime(basename, extension, folder) {
     date.getFullYear(),
     padZero(date.getMonth() + 1),
     padZero(date.getDate()),
-  ].join('-');
+  ].join('');
   const timeStr = [
     padZero(date.getHours()),
     padZero(date.getMinutes()),
-  ].join(':');
-  const filename = `${basename} ${dateStr} ${timeStr}.${extension}`;
+  ].join('');
+  const filename = `${basename}-${dateStr}${timeStr}.${extension}`;
 
   return folder ? path.join(folder, filename) : filename;
 }
