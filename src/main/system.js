@@ -39,15 +39,48 @@ async function setStartAppAtLogin(open) {
   }
 }
 
+function quitApp() {
+  app.isQuiting = true;
+  app.quit();
+}
+
+/**
+ * Creates a dynamic filename with current date and time.
+ *
+ * @param {string} basename
+ * @param {string} extension The filename extension without dot.
+ * @param {string} [folder] Add the specified folder to the filename.
+ *
+ * @returns {string} The filename in format: "basename-202410271852.ext"
+ */
+function makeFilenameWithDateTime(basename, extension, folder) {
+  const padZero = (value) => value.toString().padStart(2, '0');
+  const date = new Date();
+  const dateStr = [
+    date.getFullYear(),
+    padZero(date.getMonth() + 1),
+    padZero(date.getDate()),
+  ].join('');
+  const timeStr = [
+    padZero(date.getHours()),
+    padZero(date.getMinutes()),
+  ].join('');
+  const filename = `${basename}-${dateStr}${timeStr}.${extension}`;
+
+  return folder ? path.join(folder, filename) : filename;
+}
+
 /**
  * Provides a save dialog and converts image data url to a native image.
  *
  * @param {import('electron').BaseWindow} parentWindow
  * @param {string} imageDataUrl An image encoded as data url.
+ * @param {string} [filename] Default file name.
  */
-async function saveImage(parentWindow, imageDataUrl) {
+async function saveImage(parentWindow, imageDataUrl, filename) {
   try {
-    const defaultFileName = path.join(app.getPath('pictures'), `image-${(new Date()).getTime().toString()}.png`);
+    const defaultFileName = filename
+      || makeFilenameWithDateTime('image', 'png', app.getPath('pictures'));
 
     const result = await dialog.showSaveDialog(parentWindow, {
       title: 'Save image',
@@ -66,8 +99,8 @@ async function saveImage(parentWindow, imageDataUrl) {
     let buffer;
 
     const image = nativeImage.createFromDataURL(imageDataUrl);
-    const filename = result.filePath;
-    const ext = path.extname(filename).toLowerCase();
+    const { filePath } = result;
+    const ext = path.extname(filePath).toLowerCase();
 
     switch (ext) {
       case '.png':
@@ -80,15 +113,41 @@ async function saveImage(parentWindow, imageDataUrl) {
         throw new Error(`Cannot convert image to ${ext.replace('.', '').toUpperCase()}`);
     }
 
-    await writeFile(filename, buffer);
+    await writeFile(filePath, buffer);
   } catch (err) {
     dialog.showErrorBox('Save error', err.message);
   }
 }
 
-function quitApp() {
-  app.isQuiting = true;
-  app.quit();
+/**
+ * Saves a text data with file selection dialog.
+ *
+ * @param {import('electron').BaseWindow} parentWindow
+ * @param {string} text A text to save
+ * @param {string} [filename] Default file name.
+ */
+async function saveText(parentWindow, text, filename) {
+  try {
+    const defaultFileName = filename
+      || makeFilenameWithDateTime('text', 'txt', app.getPath('documents'));
+
+    const result = await dialog.showSaveDialog(parentWindow, {
+      title: 'Save text',
+      defaultPath: defaultFileName,
+      filters: [
+        { name: 'All files', extensions: ['*'] },
+        { name: 'TXT', extensions: ['txt'] },
+      ],
+    });
+
+    if (result.canceled) {
+      return;
+    }
+
+    await writeFile(result.filePath, text);
+  } catch (err) {
+    dialog.showErrorBox('Save error', err.message);
+  }
 }
 
 export {
@@ -96,6 +155,7 @@ export {
   isPlatformWindows,
   isPlatformDarwin,
   setStartAppAtLogin,
-  quitApp,
   saveImage,
+  saveText,
+  quitApp,
 };

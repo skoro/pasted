@@ -77,10 +77,8 @@ function onOpenUrl() {
 }
 
 function onSaveItem() {
-  // FIXME: only image can be saved.
-  if (props.clip.image) {
-    window.electronAPI.saveImage(props.clip.data);
-  }
+  const method = props.clip.image ? 'saveImage' : 'saveText';
+  window.electronAPI[method](props.clip.data);
 }
 </script>
 
