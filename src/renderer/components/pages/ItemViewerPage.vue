@@ -52,6 +52,13 @@ function toggleStarred() {
   clipboard.toggleStarred(props.clip.id);
 }
 
+/**
+ * Calculate text area height.
+ */
+function recalcHeight() {
+  textAreaHeight.value = window.innerHeight - headerBar.value.$el.clientHeight - 16;
+}
+
 function saveImage() {
   window.electronAPI.saveImage(props.clip.data);
 }  
