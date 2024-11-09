@@ -38,11 +38,6 @@ function setStartAppAtLogin(open) {
   }
 }
 
-function quitApp() {
-  app.isQuiting = true;
-  app.quit();
-}
-
 /**
  * Provides a save dialog and converts image data url to a native image.
  *
@@ -102,5 +97,4 @@ export {
   setStartAppAtLogin,
   quitApp,
   saveImage,
-  quitApp,
 };
