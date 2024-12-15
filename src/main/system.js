@@ -1,7 +1,10 @@
-import { app, dialog, nativeImage } from 'electron';
+import {
+  app, dialog, nativeImage, MenuItem, Menu,
+} from 'electron';
 import path from 'node:path';
 import { writeFile } from 'node:fs/promises';
 import * as linux from './linux';
+import { clipboardEventEmitter } from './clipboard';
 
 /**
  * @returns {boolean}
@@ -150,6 +153,63 @@ async function saveText(parentWindow, text, filename) {
   }
 }
 
+/**
+ * Updates the application tray icon menu.
+ *
+ * @param {Electron.Tray} tray
+ * @param {Electron.Menu} contextMenu The tray context menu.
+ * @param {import('../models/clip').Model[]} clipItems=[] Appends the clipboard items to the context menu.
+ * @returns {Electron.Menu} The modified context menu.
+ */
+function updateTrayContextMenu(tray, contextMenu, clipItems) {
+  // Remove previously added clipboard items.
+  const menuItems = contextMenu.items.filter((item) => ! item.id?.startsWith('clipboard--'));
+
+  contextMenu = Menu.buildFromTemplate(menuItems);
+
+  if (clipItems?.length > 0) {
+    contextMenu.insert(0, new MenuItem({
+      id: 'clipboard--sep',
+      type: 'separator',
+    }));
+
+    for (const clipItem of clipItems) {
+      const label = stringCut(clipItem.data, 50);
+      contextMenu.insert(0, new MenuItem({
+        id: `clipboard--item-${clipItem.id}`,
+        label,
+        click: () => clipboardEventEmitter.copy(clipItem),
+      }));
+    }
+  }
+
+  // Linux: In order for changes made to individual MenuItems to take effect, you have to call setContextMenu again.
+  // https://www.electronjs.org/docs/latest/api/tray
+  if (isPlatformLinux()) {
+    tray.setContextMenu(contextMenu);
+  }
+
+  return contextMenu;
+}
+
+/**
+ * Cuts a string to the specified limit of characters.
+ *
+ * @param {string} str
+ * @param {number} limit A desired string limit.
+ * @param {string} trail='...' A trail appended to the end of the string longer than limit.
+ * @return {string}
+ */
+function stringCut(str, limit, trail = '...') {
+  const cutStr = str.trim();
+
+  if (cutStr.length <= limit) {
+    return cutStr;
+  }
+
+  return cutStr.slice(0, limit) + trail;
+}
+
 export {
   isPlatformLinux,
   isPlatformWindows,
@@ -158,4 +218,5 @@ export {
   saveImage,
   saveText,
   quitApp,
+  updateTrayContextMenu,
 };
