@@ -28,12 +28,14 @@ function isPlatformDarwin() {
 }
 
 /**
+ * Sets or unsets starting the application at the user login.
+ *
  * @param {boolean} open Should the app opened at login.
  */
 async function setStartAppAtLogin(open) {
   if (isPlatformLinux()) {
     // ElectronJS does not support yet open application at login on Linux.
-    // There is be a custom solution of openAtLogin.
+    // There is a custom solution of openAtLogin.
     await (open ? linux.enableAutostart() : linux.disableAutostart());
   } else {
     app.setLoginItemSettings({
@@ -42,7 +44,11 @@ async function setStartAppAtLogin(open) {
   }
 }
 
+/**
+ * Quits the application.
+ */
 function quitApp() {
+  // isQuiting is a dynamic property. It is preventing quit the app in the closing window.
   app.isQuiting = true;
   app.quit();
 }
@@ -162,21 +168,23 @@ async function saveText(parentWindow, text, filename) {
  * @returns {Electron.Menu} The modified context menu.
  */
 function updateTrayContextMenu(tray, contextMenu, clipItems) {
+  const ITEM_PREFIX = 'clipboard--';
   // Remove previously added clipboard items.
-  const menuItems = contextMenu.items.filter((item) => ! item.id?.startsWith('clipboard--'));
+  const menuItems = contextMenu.items.filter((item) => ! item.id?.startsWith(ITEM_PREFIX));
 
   contextMenu = Menu.buildFromTemplate(menuItems);
 
   if (clipItems?.length > 0) {
+    // Inserting at 0 like unshift() on arrays - adding an item to the head of the array.
     contextMenu.insert(0, new MenuItem({
-      id: 'clipboard--sep',
+      id: `${ITEM_PREFIX}sep`,
       type: 'separator',
     }));
 
     for (const clipItem of clipItems) {
       const label = stringCut(clipItem.data, 50);
       contextMenu.insert(0, new MenuItem({
-        id: `clipboard--item-${clipItem.id}`,
+        id: `${ITEM_PREFIX}item-${clipItem.id}`,
         label,
         click: () => clipboardEventEmitter.copy(clipItem),
       }));
