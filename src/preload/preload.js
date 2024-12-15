@@ -21,4 +21,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openUrl: (value) => ipcRenderer.send('open:url', value),
   saveImage: (value) => ipcRenderer.send('save:image', value),
   saveText: (value) => ipcRenderer.send('save:text', value),
+  clipboardTop: (clips) => ipcRenderer.send('clipboard:top', clips),
 });

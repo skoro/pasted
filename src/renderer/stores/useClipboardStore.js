@@ -133,7 +133,7 @@ export const useClipboardStore = defineStore('clips', () => {
     }
   }
 
-  function getModelsFromDb() {
+  function getModelsFromDb(onAfterLoad) {
     clear();
 
     /** @type {import("../../models/clip").Model[]} */
@@ -153,6 +153,7 @@ export const useClipboardStore = defineStore('clips', () => {
          */
           (a, b) => b.created - a.created,
         );
+        if (onAfterLoad) onAfterLoad();
       },
     );
   }
@@ -165,6 +166,20 @@ export const useClipboardStore = defineStore('clips', () => {
       return modelCollection.value[0];
     }
     return null;
+  }
+
+  /**
+   * Gets n top items.
+   *
+   * @param {number} n=5 How many items from the top to get.
+   * @returns {import("../../models/clip").Model[]}
+   */
+  function top(n = 5) {
+    if (modelCollection.value.length === 0) {
+      return [];
+    }
+    // TODO: only text items are needed
+    return modelCollection.value.slice(0, n < 0 ? 10 : n).map(toRaw).reverse();
   }
 
   return {
@@ -182,5 +197,6 @@ export const useClipboardStore = defineStore('clips', () => {
     toggleStarred,
     getModelsFromDb,
     peekTop,
+    top,
   };
 });
