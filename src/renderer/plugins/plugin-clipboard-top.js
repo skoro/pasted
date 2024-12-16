@@ -1,6 +1,7 @@
 // This plugin sends 'clipboard:top' ipc event
 // after mutating actions on Clipboard store.
 
+/** @type {{electronAPI: import("../../preload/preload").electronAPI}} */
 const { electronAPI } = window;
 // The list of actions mutate the store.
 const mutateActions = ['clear', 'remove', 'moveToTop', 'put'];

@@ -39,6 +39,7 @@ import db from './stores/db';
 
 const app = createApp(App);
 const pinia = createPinia();
+/** @type {{electronAPI: import('../preload/preload').electronAPI}} */
 const { electronAPI } = window;
 
 app.use(pinia);
