@@ -171,15 +171,15 @@ export const useClipboardStore = defineStore('clips', () => {
   /**
    * Gets n top items.
    *
-   * @param {number} n=5 How many items from the top to get.
+   * @param {number} [max=5] How many items from the top to get.
    * @returns {import("../../models/clip").Model[]}
    */
-  function top(n = 5) {
+  function top(max = 5) {
     if (modelCollection.value.length === 0) {
       return [];
     }
-    // TODO: only text items are needed
-    return modelCollection.value.slice(0, n < 0 ? 10 : n).map(toRaw).reverse();
+
+    return modelCollection.value.slice(0, max < 0 ? 10 : max).map(toRaw).reverse();
   }
 
   return {
