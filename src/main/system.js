@@ -191,11 +191,9 @@ function updateTrayContextMenu(tray, contextMenu, clipItems) {
     }
   }
 
-  // Linux: In order for changes made to individual MenuItems to take effect, you have to call setContextMenu again.
+  // In order for changes made to individual MenuItems to take effect, you have to call setContextMenu again.
   // https://www.electronjs.org/docs/latest/api/tray
-  if (isPlatformLinux()) {
     tray.setContextMenu(contextMenu);
-  }
 
   return contextMenu;
 }
