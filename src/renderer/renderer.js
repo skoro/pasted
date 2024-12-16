@@ -34,23 +34,31 @@ import App from './components/App.vue';
 import { useClipboardStore } from './stores/useClipboardStore';
 import { pluginTrimStrings } from './plugins/plugin-trim-strings';
 import { pluginLocalStoragePrefs, loadPrefs } from './plugins/plugin-localstorage-prefs';
+import { pluginClipboardTop } from './plugins/plugin-clipboard-top';
 import db from './stores/db';
 
 const app = createApp(App);
 const pinia = createPinia();
+/** @type {{electronAPI: import('../preload/preload').electronAPI}} */
+const { electronAPI } = window;
 
 app.use(pinia);
 pinia.use(pluginLocalStoragePrefs);
 pinia.use(pluginTrimStrings);
+pinia.use(pluginClipboardTop);
 
 app.mount('#app');
 
 const clipboardStore = useClipboardStore();
 
-db.open(clipboardStore.getModelsFromDb);
-const prefs = loadPrefs();
+db.open(function () {
+  clipboardStore.getModelsFromDb(function () {
+    // sends 'clipboard:top' event to initialize clipboard items in tray context menu.
+    electronAPI.clipboardTop(clipboardStore.top());
+  });
+});
 
-const electronAPI = window.electronAPI;
+const prefs = loadPrefs();
 
 electronAPI.onClipboardNew(clipboardStore.put);
 

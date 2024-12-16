@@ -22,6 +22,8 @@ const props = defineProps({
   },
 });
 
+/** @type {{electronAPI: import('../../../preload/preload').electronAPI}} */
+const { electronAPI } = window;
 const emit = defineEmits(['open-page', 'close-page']);
 
 const clipboard = useClipboardStore();
@@ -36,14 +38,14 @@ function closePage() {
 }
 
 function copyClip() {
-  window.electronAPI.selectClipModel(toRaw(props.clip));
+  electronAPI.selectClipModel(toRaw(props.clip));
   closePage();
 }
 
 function removeClip() {
   if (confirm('Are you sure you want to remove ?')) {
     clipboard.remove(props.clip.id);
-    window.electronAPI.removeClipModel(props.clip.id);
+    electronAPI.removeClipModel(props.clip.id);
     closePage();
   }
 }
@@ -54,7 +56,7 @@ function toggleStarred() {
 
 function saveClip() {
   const method = props.clip.image ? 'saveImage' : 'saveText';
-  window.electronAPI[method](props.clip.data);
+  electronAPI[method](props.clip.data);
 }
 
 /**
