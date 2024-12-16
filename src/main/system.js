@@ -164,7 +164,7 @@ async function saveText(parentWindow, text, filename) {
  *
  * @param {Electron.Tray} tray
  * @param {Electron.Menu} contextMenu The tray context menu.
- * @param {import('../models/clip').Model[]} clipItems=[] Appends the clipboard items to the context menu.
+ * @param {import('../models/clip').Model[]} [clipItems] Appends the clipboard items to the context menu.
  * @returns {Electron.Menu} The modified context menu.
  */
 function updateTrayContextMenu(tray, contextMenu, clipItems) {
@@ -193,7 +193,7 @@ function updateTrayContextMenu(tray, contextMenu, clipItems) {
 
   // In order for changes made to individual MenuItems to take effect, you have to call setContextMenu again.
   // https://www.electronjs.org/docs/latest/api/tray
-    tray.setContextMenu(contextMenu);
+  tray.setContextMenu(contextMenu);
 
   return contextMenu;
 }
@@ -203,7 +203,7 @@ function updateTrayContextMenu(tray, contextMenu, clipItems) {
  *
  * @param {string} str
  * @param {number} limit A desired string limit.
- * @param {string} trail='...' A trail appended to the end of the string longer than limit.
+ * @param {string} [trail='...'] A trail appended to the end of the string longer than limit.
  * @return {string}
  */
 function stringCut(str, limit, trail = '...') {
