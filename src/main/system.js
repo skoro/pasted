@@ -182,7 +182,7 @@ function updateTrayContextMenu(tray, contextMenu, clipItems) {
     }));
 
     for (const clipItem of clipItems) {
-      const label = stringCut(clipItem.data, 50);
+      const label = clipItem.image ? '[IMAGE]' : stringCut(clipItem.data, 50);
       contextMenu.insert(0, new MenuItem({
         id: `${ITEM_PREFIX}item-${clipItem.id}`,
         label,
