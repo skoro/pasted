@@ -17,6 +17,8 @@ const props = defineProps({
 
 const emit = defineEmits(['peek-item', 'qr-item']);
 
+/** @type {{electronAPI: import('../../preload/preload').electronAPI}} */
+const { electronAPI } = window;
 const isCopied = ref(false);
 const clipboardStore = useClipboardStore();
 const context = shallowRef(ClipboardItemView);
@@ -44,7 +46,7 @@ function onCopyItem() {
   setTimeout(() => {
     isCopied.value = false;
   }, 800);
-  window.electronAPI.selectClipModel(toRaw(props.clip));
+  electronAPI.selectClipModel(toRaw(props.clip));
   setViewContext();
 }
 
@@ -58,7 +60,7 @@ function onRemoveItem() {
         || (props.clip.starred && confirm('Are you sure you want to remove ?'))) {
     clipboardStore.remove(props.clip.id);
     // FIXME: there should be original object, vue proxied object cannot be cloned by ipc
-    window.electronAPI.removeClipModel(props.clip.id);
+    electronAPI.removeClipModel(props.clip.id);
   }
 }
 
@@ -73,12 +75,12 @@ function onQrItem() {
 }
 
 function onOpenUrl() {
-  window.electronAPI.openUrl(props.clip.data);
+  electronAPI.openUrl(props.clip.data);
 }
 
 function onSaveItem() {
   const method = props.clip.image ? 'saveImage' : 'saveText';
-  window.electronAPI[method](props.clip.data);
+  electronAPI[method](props.clip.data);
 }
 </script>
 

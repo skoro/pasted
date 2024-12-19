@@ -4,7 +4,8 @@ import { usePreferencesStore } from '../stores/usePreferencesStore';
 import { useClipboardStore } from '../stores/useClipboardStore';
 import Clip from '../../models/clip';
 
-const electron = window.electronAPI;
+/** @type {{electronAPI: import('../../preload/preload').electronAPI}} */
+const { electronAPI } = window;
 
 /**
  * @param {import("../../models/clip").Model} model
@@ -18,8 +19,8 @@ function trimStrings(model) {
   // eslint-disable-next-line no-param-reassign
   model.data = trimmed.data;
 
-  electron.removeClipModel(model.id);
-  electron.selectClipModel(model);
+  electronAPI.removeClipModel(model.id);
+  electronAPI.selectClipModel(model);
 }
 
 /**
@@ -29,13 +30,13 @@ function trimStrings(model) {
  */
 function ignoreEmptyStrings(model) {
   if (!model.image && model.data.trim().length === 0) {
-    electron.removeClipModel(model.id);
+    electronAPI.removeClipModel(model.id);
 
     const clipboardStore = useClipboardStore();
     const top = clipboardStore.peekTop();
 
     if (top) {
-      electron.selectClipModel(toRaw(top));
+      electronAPI.selectClipModel(toRaw(top));
     }
 
     throw new Error('plugin info: ignore empty string');
