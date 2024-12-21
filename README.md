@@ -14,6 +14,7 @@
 * Preview text and images.
 * Responsive by window size: 1, 2, 3, 4 columns.
 * Search text items.
+* Access clipboard from the application tray menu.
 * Available for Windows and Linux.
 
 ## App

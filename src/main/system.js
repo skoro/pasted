@@ -1,7 +1,10 @@
-import { app, dialog, nativeImage } from 'electron';
+import {
+  app, dialog, nativeImage, MenuItem, Menu,
+} from 'electron';
 import path from 'node:path';
 import { writeFile } from 'node:fs/promises';
 import * as linux from './linux';
+import { clipboardEventEmitter } from './clipboard';
 
 /**
  * @returns {boolean}
@@ -25,12 +28,14 @@ function isPlatformDarwin() {
 }
 
 /**
+ * Sets or unsets starting the application at the user login.
+ *
  * @param {boolean} open Should the app opened at login.
  */
 async function setStartAppAtLogin(open) {
   if (isPlatformLinux()) {
     // ElectronJS does not support yet open application at login on Linux.
-    // There is be a custom solution of openAtLogin.
+    // There is a custom solution of openAtLogin.
     await (open ? linux.enableAutostart() : linux.disableAutostart());
   } else {
     app.setLoginItemSettings({
@@ -39,7 +44,11 @@ async function setStartAppAtLogin(open) {
   }
 }
 
+/**
+ * Quits the application.
+ */
 function quitApp() {
+  // isQuiting is a dynamic property. It is preventing quit the app in the closing window.
   app.isQuiting = true;
   app.quit();
 }
@@ -150,6 +159,63 @@ async function saveText(parentWindow, text, filename) {
   }
 }
 
+/**
+ * Updates the application tray icon menu.
+ *
+ * @param {Electron.Tray} tray
+ * @param {Electron.Menu} contextMenu The tray context menu.
+ * @param {import('../models/clip').Model[]} [clipItems] Appends the clipboard items to the context menu.
+ * @returns {Electron.Menu} The modified context menu.
+ */
+function updateTrayContextMenu(tray, contextMenu, clipItems) {
+  const ITEM_PREFIX = 'clipboard--';
+  // Remove previously added clipboard items.
+  const menuItems = contextMenu.items.filter((item) => ! item.id?.startsWith(ITEM_PREFIX));
+
+  contextMenu = Menu.buildFromTemplate(menuItems);
+
+  if (clipItems?.length > 0) {
+    // Inserting at 0 like unshift() on arrays - adding an item to the head of the array.
+    contextMenu.insert(0, new MenuItem({
+      id: `${ITEM_PREFIX}sep`,
+      type: 'separator',
+    }));
+
+    for (const clipItem of clipItems) {
+      const label = clipItem.image ? '[IMAGE]' : stringCut(clipItem.data, 50);
+      contextMenu.insert(0, new MenuItem({
+        id: `${ITEM_PREFIX}item-${clipItem.id}`,
+        label,
+        click: () => clipboardEventEmitter.copy(clipItem),
+      }));
+    }
+  }
+
+  // In order for changes made to individual MenuItems to take effect, you have to call setContextMenu again.
+  // https://www.electronjs.org/docs/latest/api/tray
+  tray.setContextMenu(contextMenu);
+
+  return contextMenu;
+}
+
+/**
+ * Cuts a string to the specified limit of characters.
+ *
+ * @param {string} str
+ * @param {number} limit A desired string limit.
+ * @param {string} [trail='...'] A trail appended to the end of the string longer than limit.
+ * @return {string}
+ */
+function stringCut(str, limit, trail = '...') {
+  const cutStr = str.trim().split('\n')[0].trim();
+
+  if (cutStr.length <= limit) {
+    return cutStr;
+  }
+
+  return cutStr.slice(0, limit) + trail;
+}
+
 export {
   isPlatformLinux,
   isPlatformWindows,
@@ -158,4 +224,5 @@ export {
   saveImage,
   saveText,
   quitApp,
+  updateTrayContextMenu,
 };

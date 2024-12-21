@@ -11,6 +11,8 @@ import { version as appVersion, homepage } from '../../../../package.json';
 
 const emit = defineEmits(['close-page']);
 
+/** @type {{electronAPI: import('../../../preload/preload').electronAPI}} */
+const { electronAPI } = window;
 const prefs = usePreferencesStore();
 
 function closePage() {
@@ -21,7 +23,7 @@ function closePage() {
  * @param {string} url
  */
 function openUrl(url) {
-  window.electronAPI.openUrl(url);
+  electronAPI.openUrl(url);
 }
 
 onMounted(() => {
@@ -29,7 +31,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.electronAPI.changeStartAtLogin(prefs.startAtLogin);
+  electronAPI.changeStartAtLogin(prefs.startAtLogin);
 });
 </script>
 
