@@ -1,12 +1,12 @@
 <script setup>
 import Clip from '../../models/clip';
 import ToolButton from './forms/ToolButton.vue';
-import IconBack from './icons/IconBack.vue';
 import IconCopy from './icons/IconCopy.vue';
 import IconTrash from './icons/IconTrash.vue';
 import IconSearch from './icons/IconSearch.vue';
 import IconQR from './icons/IconQR.vue';
 import IconDownload from './icons/IconDownload.vue';
+import IconCross from './icons/IconCross.vue';
 
 defineEmits([
   'switch-view',
@@ -26,9 +26,9 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-row space-x-3 text-slate-600">
-        <ToolButton class="h-8 w-8" @click="$emit('switch-view', 'view')" tooltip="Back">
-            <IconBack />
+    <div class="flex flex-row-reverse w-full space-x-3 text-slate-600">
+        <ToolButton class="h-8 w-8 pl-2" @click="$emit('switch-view', 'view')">
+            <IconCross />
         </ToolButton>
         <ToolButton class="h-8 w-8" @click="$emit('copy-item')" tooltip="Copy">
             <IconCopy />
