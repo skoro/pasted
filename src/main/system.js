@@ -207,7 +207,7 @@ function updateTrayContextMenu(tray, contextMenu, clipItems) {
  * @return {string}
  */
 function stringCut(str, limit, trail = '...') {
-  const cutStr = str.trim().split('\n')[0].trim();
+  const cutStr = str.trim().split('\n').map((s) => s.trim()).join(' ');
 
   if (cutStr.length <= limit) {
     return cutStr;
