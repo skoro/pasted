@@ -15,7 +15,7 @@ const props = defineProps({
 const model = defineModel();
 const elemId = 'pref-' + window.crypto.randomUUID();
 
-const hasHelp = computed(() => props.help.length > 0);
+const hasHelp = computed(() => props.help && props.help.length > 0);
 </script>
 
 <template>
