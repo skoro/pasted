@@ -7,6 +7,7 @@ import { clipboardEventEmitter } from './clipboard';
 import { keyboard } from '../renderer/keyshortcuts';
 import {
   setStartAppAtLogin, isPlatformLinux, isPlatformDarwin, saveImage, saveText, quitApp,
+  updateTrayContextMenu,
 } from './system';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -15,9 +16,20 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+class AppBrowserWindow extends BrowserWindow {
+  /** @type {?Electron.Menu} */
+  trayContextMenu = null;
+  /** @type {?Electron.Tray} */
+  tray = null;
+
+  toggleVisibility() {
+    this.isVisible() ? this.hide() : this.show();
+  };
+}
+
 const createMainWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const mainWindow = new AppBrowserWindow({
     width: 380,
     height: 640,
     minWidth: 260,
@@ -70,47 +82,43 @@ const createMainWindow = () => {
   ipcMain.on('open:url', (_, url) => shell.openExternal(url));
   ipcMain.on('save:image', (_, image) => saveImage(mainWindow, image));
   ipcMain.on('save:text', (_, text) => saveText(mainWindow, text));
+  // updates clipboard items in tray context menu
+  ipcMain.on('clipboard:top', (_, clips) => updateTrayContextMenu(mainWindow.tray, mainWindow.trayContextMenu, clips));
 
   return mainWindow;
 };
 
 // Create and setup the application tray icon.
 /**
- * @param {BrowserWindow} mainWindow
+ * @param {AppBrowserWindow} mainWindow
  */
 const createTrayIcon = (mainWindow) => {
   const icon = nativeImage.createFromPath(path.join(__dirname, '..', '..', 'resources', 'icon.png'));
   const tray = new Tray(icon);
 
-  const showHideCallback = () => {
-    if (mainWindow.isVisible()) {
-      mainWindow.hide();
-    } else {
-      mainWindow.show();
-    }
-  };
-
   const contextMenu = Menu.buildFromTemplate([
     {
+      id: 'quit',
       label: 'Quit',
       click: quitApp,
     },
   ]);
 
-  // Gnome tray does not support actions by icon clicking.
-  // There is a menu item does the same as clicking on the icon to show/hide the main window.
-  if (isPlatformLinux()) {
-    contextMenu.insert(0, new MenuItem({
-      label: 'Show/Hide',
-      click: () => showHideCallback(),
-    }));
-    contextMenu.insert(1, new MenuItem({ type: 'separator' }));
-  }
+  contextMenu.insert(0, new MenuItem({
+    id: 'open-main-window',
+    label: 'Open Main Window',
+    click: () => mainWindow.show(),
+  }));
+
+  contextMenu.insert(1, new MenuItem({ type: 'separator' }));
 
   tray.setContextMenu(contextMenu);
   tray.setToolTip('Pasted');
 
-  tray.on('click', () => showHideCallback());
+  tray.on('click', () => mainWindow.toggleVisibility());
+
+  mainWindow.trayContextMenu = contextMenu;
+  mainWindow.tray = tray;
 };
 
 /**
