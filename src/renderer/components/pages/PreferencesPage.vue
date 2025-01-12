@@ -57,15 +57,13 @@ onUnmounted(() => {
             <CheckboxElem
                 class="py-2"
                 v-model="prefs.startMinimized"
-                label="Start minimized"
-                help="Application will start minimized into the system tray."
+                label="Start in tray"
             ></CheckboxElem>
 
             <CheckboxElem
                 class="py-2"
                 v-model="prefs.startAtLogin"
-                label="Start at login"
-                help="Application will start after user login."
+                label="Start upon user login"
             ></CheckboxElem>
 
             <div class="text-sm text-slate-400 space-y-3 pt-4">
