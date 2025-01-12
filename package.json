@@ -2,7 +2,7 @@
   "private": true,
   "name": "Pasted",
   "productName": "Pasted",
-  "version": "0.6.0",
+  "version": "0.7.1",
   "description": "Yet another clipboard manager",
   "homepage": "https://github.com/skoro/pasted",
   "main": ".vite/build/main.js",
